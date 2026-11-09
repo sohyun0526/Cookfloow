@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>쿡플로우 · AI 요리·디저트·음료 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#14b19a; --teal-d:#0e9a85; --teal-l:#e3f6f2;
+  --ink:#1d2329; --sub:#6b747d; --line:#e7ebee; --card:#ffffff; --panel:#f5f7f8;
+  --yellow:#ffd84d; --high:#fde2e1; --high-t:#c2413a; --med:#fff1d6; --med-t:#b16f05;
+  --low:#e1eefb; --low-t:#2d6cb0; --off:#eef0f2; --off-t:#5b6470;
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans KR",system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(160deg,#cfe6f2 0%,#a9d2e6 45%,#d9ece7 100%);min-height:100vh;padding:28px 18px}
+.shell{max-width:1240px;margin:0 auto;background:rgba(255,255,255,.72);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:14px;box-shadow:0 20px 60px rgba(40,90,110,.18)}
+.top{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:var(--r);
+  padding:10px 14px;border:1px solid var(--line);gap:10px;flex-wrap:wrap}
+.logo{font-weight:800;letter-spacing:.5px;font-size:18px}
+.logo span{color:var(--teal)}
+.tabs{display:flex;gap:6px}
+.tab{border:1px solid transparent;background:none;padding:7px 14px;border-radius:9px;font:inherit;font-size:13px;color:var(--sub);cursor:pointer}
+.tab.on{background:var(--teal);color:#fff;border-color:var(--teal-d)}
+.iconbtn{border:1px solid var(--line);background:#fff;border-radius:9px;height:34px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;
+  font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.engine-pill{font-size:12px;color:var(--sub)}
+.engine-pill b{color:var(--teal-d)}
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:14px;margin-top:14px;align-items:start}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px}
+.ptitle{font-size:12px;color:var(--sub);margin:2px 4px 10px;display:flex;justify-content:space-between;align-items:center}
+.cta{width:100%;border:1px solid var(--teal-d);background:linear-gradient(180deg,#20c3aa,var(--teal));color:#fff;border-radius:10px;
+  padding:11px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.cta:disabled{opacity:.6;cursor:wait}
+label{display:block;font-size:12px;color:var(--sub);margin:10px 0 5px}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:14px;color:var(--ink);background:#fff}
+textarea{resize:vertical;min-height:64px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--teal-l);border-color:var(--teal)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--teal);color:var(--teal-d)}
+.note{border-left:3px solid var(--teal);background:#fff;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--sub);line-height:1.55;border:1px solid #cfe9e4;border-left-width:3px}
+.hero h2{margin:0;font-size:20px}
+.hero p{margin:6px 0 0;color:var(--sub);font-size:13px;line-height:1.6}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.meta span{background:var(--teal-l);color:var(--teal-d);font-size:12px;padding:4px 10px;border-radius:20px;font-weight:500}
+.ing{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;align-items:start}
+.icard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0}
+.icard>summary{list-style:none;cursor:pointer;padding:12px 12px 10px;display:flex;flex-direction:column;gap:4px;border-radius:12px}
+.icard>summary::-webkit-details-marker{display:none}
+.icard>summary:hover{background:#fafcfc}
+.icard h3{margin:0;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.icard h3 .nm{display:flex;align-items:center;gap:6px}
+.icard h3 .nm::before{content:"▸";color:var(--sub);font-size:12px;transition:transform .15s}
+.icard[open] h3 .nm::before{transform:rotate(90deg)}
+.icard .peek{font-size:12px;color:var(--sub);line-height:1.5}
+.icard[open] .peek{display:none}
+.icard .body{padding:0 12px 12px;display:flex;flex-direction:column;gap:8px}
+.fold>summary{list-style:none;cursor:pointer}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary .ttl{display:flex;align-items:center;gap:6px}
+.fold>summary .ttl::before{content:"▸";font-size:11px;transition:transform .15s}
+.fold[open]>summary .ttl::before{transform:rotate(90deg)}
+.fold:not([open])>summary{margin-bottom:2px}
+.fold .cnt{font-size:11px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:1px 8px}
+.fold:not([open]) #ingAll{display:none}
+.kv{font-size:12.5px;line-height:1.55}
+.kv b{display:block;font-size:11px;color:var(--sub);font-weight:500;margin-bottom:1px}
+.done{background:#fffbe8;border:1px solid #f5e3a0;border-radius:8px;padding:7px 9px;font-size:12.5px}
+.done b{color:#8a6d00;font-size:11px;display:block}
+.heat{font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.h-high{background:var(--high);color:var(--high-t)} .h-med{background:var(--med);color:var(--med-t)}
+.h-low{background:var(--low);color:var(--low-t)} .h-cold{background:#dcf3f6;color:#167a87} .h-off{background:var(--off);color:var(--off-t)}
+.tl{display:flex;flex-direction:column;gap:8px}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:56px 1fr 28px;gap:10px;align-items:start;border-left:3px solid var(--line)}
+.step.prep{border-left-color:#9aa5af} .step.cook{border-left-color:var(--teal)} .step.rest{border-left-color:#7aa8d8} .step.serve{border-left-color:#f0b400}
+.step .t{font-weight:800;font-size:15px}
+.step .o{font-size:11px;color:var(--sub)}
+.step .a{font-size:13px;line-height:1.55}
+.step .a .heat{margin-right:6px}
+.step input{width:18px;height:18px;margin-top:2px;accent-color:var(--teal)}
+.step.checked .a{color:#a0a8b0;text-decoration:line-through}
+.tips li{font-size:13px;line-height:1.6;color:var(--ink);margin-bottom:4px}
+.tips{padding-left:18px;margin:4px 0}
+.err{background:#fdecec;border:1px solid #f4c2c0;color:#a22a24;border-radius:10px;padding:10px 12px;font-size:13px;display:none;line-height:1.55}
+.loading{display:none;align-items:center;gap:10px;font-size:13px;color:var(--sub);padding:6px 4px}
+.spin{width:16px;height:16px;border:2px solid var(--teal-l);border-top-color:var(--teal);border-radius:50%;animation:s 0.8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.stream{font-size:12px;color:var(--sub);white-space:pre-wrap;max-height:120px;overflow:auto;display:none;background:#fff;border-radius:8px;padding:8px;border:1px dashed var(--line)}
+.btn-y{background:var(--yellow);border:1px solid #e9c22c;border-radius:9px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.btn-o{background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 12px;font:inherit;font-size:12.5px;cursor:pointer}
+.history .h{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:13px;cursor:pointer}
+.history .h:hover{border-color:var(--teal)}
+.history .h small{color:var(--sub)}
+.empty{font-size:12px;color:var(--sub);padding:4px}
+/* modal */
+.mask{position:fixed;inset:0;background:rgba(20,40,50,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal{background:#fff;border-radius:18px;max-width:460px;width:100%;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.modal h3{margin:0 0 4px}
+.modal .desc{font-size:12.5px;color:var(--sub);line-height:1.6}
+.radio{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.radio label{margin:0;display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:9px 10px;color:var(--ink);font-size:13px;cursor:pointer}
+.radio label small{display:block;color:var(--sub);font-size:11.5px}
+.radio input{width:auto;margin-top:3px;accent-color:var(--teal)}
+.warn{font-size:12px;color:#9a5b00;background:#fff6e0;border:1px solid #f3dca2;border-radius:8px;padding:8px 10px;margin-top:10px;line-height:1.55}
+.mfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.pagebar{display:flex;gap:6px;margin-top:10px;overflow-x:auto;padding:2px 2px 4px}
+.ptab{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 6px 6px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;color:var(--ink);flex-shrink:0}
+.ptab:hover{border-color:var(--teal)}
+.ptab.on{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-l);font-weight:700}
+.ptab .name{max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.ptab .cnt{font-size:11px;color:var(--sub);font-weight:400}
+.ptab .x{border:none;background:none;color:#9aa5af;cursor:pointer;font-size:15px;line-height:1;padding:3px 6px;border-radius:6px;font-family:inherit}
+.ptab .x:hover{background:var(--off);color:var(--ink)}
+.ptab .x.arm{color:#fff;background:var(--high-t);font-size:11px;font-weight:700}
+.ptab .spin{width:12px;height:12px}
+.ptab.add{color:var(--teal-d);border-style:dashed;padding-right:12px}
+.ptab.add:disabled{opacity:.45;cursor:not-allowed}
+.ptab.all{margin-left:auto;background:var(--teal-l);border-color:#bfe6de;color:var(--teal-d);padding-right:12px;font-weight:700}
+.ptab.all.on{background:var(--teal);border-color:var(--teal-d);color:#fff}
+.allview{margin-top:14px}
+.live{font-size:10px;color:#fff;background:var(--high-t);border-radius:6px;padding:1px 6px;font-weight:700;letter-spacing:.3px}
+#tlPanel .ptitle{flex-wrap:wrap;gap:6px}
+.btn-run{background:var(--teal);color:#fff;border:1px solid var(--teal-d);border-radius:9px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-run.stop{background:#fff;color:var(--high-t);border-color:#f4c2c0}
+.btn-run.arm{background:var(--high-t);color:#fff;border-color:var(--high-t)}
+.btn-run:disabled,.btn-o:disabled{opacity:.45;cursor:not-allowed}
+.runbar{display:none;background:#fff;border:1px solid #bfe6de;border-radius:10px;padding:9px 11px;margin-bottom:8px;font-size:13px;line-height:1.55}
+.runbar b{color:var(--teal-d)}
+.runbar .sub{color:var(--sub);font-size:11.5px;margin-top:3px}
+.runbar .warnline{color:#9a5b00;font-size:12px;margin-top:3px}
+.step.due:not(.checked){border-color:#f4c2c0;background:#fffafa}
+.step.due:not(.checked) .t{color:var(--high-t)}
+.step.next{box-shadow:0 0 0 2px var(--teal-l);border-color:var(--teal)}
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:20;display:flex;flex-direction:column;gap:8px;width:min(440px,calc(100% - 24px))}
+.toast{background:#1d2329;color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.3);display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;animation:pop .25s ease}
+.toast .tt{font-size:11.5px;opacity:.75;display:flex;gap:6px;align-items:center}
+.toast .tm{font-size:14.5px;line-height:1.5;font-weight:500;margin-top:2px}
+.toast button{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:9px 13px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.toast.fin{background:var(--teal-d)} .toast.fin button{background:#fff;color:var(--teal-d)}
+@keyframes pop{from{transform:translateY(10px);opacity:0}}
+.allsum{display:flex;gap:8px;flex-wrap:wrap;margin:0 4px 10px}
+.allsum>span{font-size:12px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:5px 11px;display:flex;gap:7px;align-items:center}
+.grp{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:56px 1fr;gap:10px}
+.grp .t{font-weight:800;font-size:15px}
+.grp.clash{border-color:#f3dca2;background:#fffdf5}
+.clash-note{font-size:11px;color:#9a5b00;margin-top:2px}
+.grp .items{display:flex;flex-direction:column;gap:6px}
+.it{display:grid;grid-template-columns:1fr 22px;gap:8px;align-items:start;font-size:13px;line-height:1.55;padding-left:9px;border-left:3px solid}
+.it input{width:18px;height:18px;margin-top:2px;accent-color:var(--teal)}
+.it.checked .a{color:#a0a8b0;text-decoration:line-through}
+.dish-tag{font-size:11.5px;font-weight:700;margin-right:6px}
+.it .heat{margin-right:6px}
+.pen{border:1px solid transparent;background:none;border-radius:8px;cursor:pointer;font:inherit;font-size:12px;color:var(--sub);padding:3px 6px;line-height:1.2;white-space:nowrap}
+.pen:hover{border-color:var(--line);background:#fff;color:var(--ink)}
+.sec-edit{font-size:12.5px}
+.sa{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sa .pen{padding:2px 4px;font-size:12px}
+.icard h3 .hr{display:flex;align-items:center;gap:4px}
+.ptitle .rt{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.editing .pen,.editing .sec-edit{display:none!important}
+.editbar{display:none;position:sticky;top:8px;z-index:6;background:#1d2329;color:#fff;border-radius:12px;padding:8px 8px 8px 14px;align-items:center;justify-content:space-between;gap:10px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.editing .editbar{display:flex}
+.editbar .acts{display:flex;gap:6px}
+.editbar .btn-o{background:transparent;color:#fff;border-color:#4b545c}
+.editbar .btn-o.arm{background:var(--high-t);border-color:var(--high-t)}
+.editing #tlPanel .ptitle>span:last-child,.editing #supReset,.editing #supCopy,.editing #hpReset,.editing #hpCopy,.editing #ingAll,.editing #runbar,.editing #editBtn{display:none!important}
+.ed label{margin:8px 0 4px}
+#midCol.editing textarea{min-height:36px;resize:vertical;font-size:13px;line-height:1.5;padding:7px 9px;overflow:hidden}
+#midCol.editing input,#midCol.editing select{font-size:13px;padding:7px 9px}
+.row3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.icard.edit{padding:10px;display:flex;flex-direction:column;gap:4px}
+.icard.edit .eh{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.icard.edit .eh .nm-in{flex:1 1 140px;font-weight:700}
+.icard.edit .eh .heat-in{flex:1 1 90px;width:0;min-width:0}
+.icard.edit .eh .nm-in{width:0;min-width:0}
+.icard.edit label{margin:4px 0 2px;font-size:11px}
+.acts2{display:flex;gap:4px;margin-left:auto}
+.mini{border:1px solid var(--line);background:#fff;border-radius:8px;min-width:32px;height:32px;cursor:pointer;font:inherit;font-size:13px;color:var(--sub)}
+.mini:hover:not(:disabled){border-color:var(--teal);color:var(--ink)}
+.mini:disabled{opacity:.35;cursor:default}
+.mini.del:hover{border-color:#f4c2c0;color:var(--high-t)}
+.addbtn{border:1px dashed #9fd9cd;background:#fff;color:var(--teal-d);border-radius:12px;padding:12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;min-height:48px}
+.addbtn:hover{background:var(--teal-l)}
+.step.edit{grid-template-columns:92px 1fr 32px;align-items:start}
+.step.edit .o{margin-top:4px}
+.step.edit .erow{display:grid;grid-template-columns:96px 1fr;gap:6px;margin-bottom:6px}
+.tips.edit{list-style:none;padding:0}
+.tips.edit li{display:grid;grid-template-columns:1fr 32px;gap:6px;margin-bottom:6px}
+.tips.edit li.addli{display:block}
+.chk{display:flex;flex-direction:column;gap:6px}
+label.crow,label.schip{margin:0;color:var(--ink)}
+.crow{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 11px;display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;cursor:pointer}
+.crow input{width:18px;height:18px;margin-top:2px;accent-color:var(--teal)}
+.crow .nm{font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.crow .ds{font-size:12.5px;line-height:1.55;color:var(--ink);margin-top:2px}
+.crow .pk{font-size:11.5px;color:var(--sub);margin-top:3px}
+.crow.checked .nm,.crow.checked .ds,.crow.checked .pk{color:#a0a8b0;text-decoration:line-through}
+.bag{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--teal-l);color:var(--teal-d);font-size:12px;font-weight:800}
+.sup{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.sgrp{margin-bottom:10px}.sgrp:last-child{margin-bottom:0}
+.sgrp h4{margin:2px 4px 6px;font-size:12px;color:var(--sub);font-weight:700}
+.schip{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;cursor:pointer}
+.schip input{width:17px;height:17px;accent-color:var(--teal);margin:0}
+.schip.checked{background:#f6f8f9}.schip.checked span{color:#a0a8b0;text-decoration:line-through}
+.prog{font-size:11.5px;color:var(--teal-d);background:var(--teal-l);border-radius:20px;padding:2px 9px;font-weight:700}
+.erow4{display:grid;grid-template-columns:56px 1fr 32px;gap:6px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;margin-bottom:6px}
+.erow4 .f2{display:flex;flex-direction:column;gap:6px}
+.erow3{display:grid;grid-template-columns:1fr 96px 32px;gap:6px;margin-bottom:6px}
+#midCol.editing .erow4 input,#midCol.editing .erow3 input,#midCol.editing .erow3 select{font-size:13px;padding:7px 9px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+@media (max-width:720px){.grid{grid-template-columns:1fr}.tabs{display:none}body{padding:10px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="logo">COOK<span>FLOW</span></div>
+    <div class="tabs">
+      <button class="tab on" data-view="guide">가이드</button>
+      <button class="tab" data-view="timeline">타임라인</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="engine-pill">AI: <b id="engineName">—</b></span>
+      <button class="iconbtn" id="openSettings">⚙︎ API 설정</button>
+    </div>
+  </div>
+
+  <div class="pagebar" id="pagebar" aria-label="요리 페이지"></div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="col">
+      <div class="panel">
+        <div class="ptitle">무엇을 만들까요?</div>
+        <div class="card">
+          <form id="f">
+            <label for="dish" style="margin-top:0">요리 · 디저트 · 음료</label>
+            <input id="dish" placeholder="예: 양갈비 바베큐 / 위스키 아포가토 / 토닉 하이볼" required>
+            <div class="chips">
+              <button type="button" class="chip">양갈비 바베큐</button>
+              <button type="button" class="chip">연어 스테이크</button>
+              <button type="button" class="chip">산토리 토닉 하이볼</button>
+              <button type="button" class="chip">위스키 아포가토</button>
+              <button type="button" class="chip">뱅쇼</button>
+            </div>
+            <div class="row2">
+              <div><label for="people">인원</label><input id="people" placeholder="4명"></div>
+              <div><label for="start">시작 시각</label><input id="start" type="time" value="18:10"></div>
+            </div>
+            <label for="gear">도구 · 장비</label>
+            <input id="gear" placeholder="예: 가스그릴(버너 1개) / 하이볼 잔·지거 / 에어프라이어">
+            <label for="extra">재료 · 요청 사항</label>
+            <textarea id="extra" placeholder="예: 시즈닝은 올리브유·소금·후추만 / 덜 달게 / 무알콜 버전도"></textarea>
+            <button class="cta" id="go" style="margin-top:12px">AI 가이드 만들기</button>
+          </form>
+          <div class="loading" id="loading"><div class="spin"></div><span id="loadingText">AI가 레시피를 짜는 중…</span></div>
+          <div class="stream" id="stream"></div>
+          <div class="err" id="err2" style="margin-top:8px"></div>
+        </div>
+      </div>
+      <div class="note" id="hint">메뉴마다 페이지를 만들어(최대 5개) 따로 저장·관리하고, 위쪽 <b>⚡ 동시 진행</b>에서 모든 요리의 순서를 시간대별로 합쳐 볼 수 있어요.</div>
+      <div class="panel history">
+        <div class="ptitle">최근 만든 가이드 <small style="font-size:11px">클릭하면 현재 페이지로 불러와요</small></div>
+        <div id="hist"><div class="empty">아직 없어요</div></div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="col" id="midCol">
+      <div class="editbar" id="editbar"><span>✏️ 편집 중 · 저장을 눌러야 반영돼요</span>
+        <span class="acts"><button type="button" class="btn-o" data-act="edit-cancel" id="editCancel">취소</button><button type="button" class="btn-y" data-act="edit-save" id="editSave">저장</button></span></div>
+      <div class="err" id="err"></div>
+      <div class="panel">
+        <div class="ptitle"><span>개요</span><button type="button" class="btn-o" data-act="edit-start" data-sec="hero" id="editBtn">✏️ 전체 편집</button></div>
+        <div class="card hero" id="hero"></div>
+      </div>
+      <div class="panel" id="supPanel">
+        <div class="ptitle"><span>🧺 준비물 <span class="prog" id="supCnt"></span></span>
+          <span class="rt"><button type="button" class="btn-o sec-edit" data-act="edit-start" data-sec="sup">✏️ 수정</button><button type="button" class="btn-o" id="supReset">체크 해제</button><button type="button" class="btn-y" id="supCopy">복사</button></span></div>
+        <div id="sup"></div>
+      </div>
+      <div class="panel" id="hpPanel">
+        <div class="ptitle"><span>🏠 사전 준비 (집에서) <span class="prog" id="hpCnt"></span></span>
+          <span class="rt"><button type="button" class="btn-o sec-edit" data-act="edit-start" data-sec="hp">✏️ 수정</button><button type="button" class="btn-o" id="hpReset">체크 해제</button><button type="button" class="btn-y" id="hpCopy">복사</button></span></div>
+        <div class="chk" id="hp"></div>
+      </div>
+      <details class="panel fold" id="ingSec" open>
+        <summary class="ptitle"><span class="ttl">재료별 준비 · 맛내기 · 완성 판단 <span class="cnt" id="ingCnt"></span></span>
+          <span class="rt"><button type="button" class="btn-o sec-edit" data-act="edit-start" data-sec="ing">✏️ 수정</button><button type="button" class="btn-o" id="ingAll">모두 접기</button></span></summary>
+        <div class="ing" id="ing"></div>
+      </details>
+      <div class="panel" id="tlPanel">
+        <div class="ptitle"><span>시간별 쿠킹 순서</span>
+          <span style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn-o sec-edit" data-act="edit-start" data-sec="tl">✏️ 수정</button><button class="btn-run" id="run">▶ 지금 시작</button><button class="btn-o" id="shift">시작 시각 적용</button><button class="btn-y" id="copy">복사</button></span></div>
+        <div class="runbar" id="runbar" aria-live="polite"></div>
+        <div class="tl" id="tl"></div>
+      </div>
+      <div class="panel">
+        <div class="ptitle"><span>주의 · 팁</span><button type="button" class="btn-o sec-edit" data-act="edit-start" data-sec="tips">✏️ 수정</button></div>
+        <div class="card"><ul class="tips" id="tips"></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="allview" id="allview" style="display:none">
+    <div class="panel">
+      <div class="ptitle"><span>⚡ 동시 진행 · 모든 요리를 시간대별로 합친 순서</span><button class="btn-y" id="copyAll">복사</button></div>
+      <div class="allsum" id="allsum"></div>
+      <div class="tl" id="tlAll"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="assertive"></div>
+<datalist id="heatList"><option value="High"><option value="Medium"><option value="Low"><option value="High → Low"><option value="끄기"><option value="차갑게"><option value="냉동"><option value="실온"><option value="뜨겁게"><option value="약불 (끓이지 않기)"></datalist><datalist id="kindList"><option value="요리"><option value="디저트"><option value="음료"><option value="칵테일"><option value="베이킹"><option value="코스"></datalist>
+
+<!-- settings -->
+<div class="mask" id="mask">
+  <div class="modal" role="dialog" aria-label="API 설정">
+    <h3>AI 연결 설정</h3>
+    <div class="desc">어떤 AI로 답변을 만들지 고르세요. API 키는 이 브라우저에만 저장되고 다른 곳으로 보내지지 않아요(선택한 AI 서버로만 전송).</div>
+    <div class="radio">
+      <label><input type="radio" name="eng" value="claude"><span>Claude 내장 <small>키 없이 바로 사용 · claude.ai에서 열었을 때만 동작</small></span></label>
+      <label><input type="radio" name="eng" value="anthropic"><span>내 Anthropic API 키 <small>api.anthropic.com 직접 호출</small></span></label>
+      <label><input type="radio" name="eng" value="openai"><span>내 OpenAI / 호환 API 키 <small>OpenAI 또는 OpenAI 호환 엔드포인트</small></span></label>
+    </div>
+    <div id="keyBox">
+      <label for="apiKey">API 키</label><input id="apiKey" type="password" placeholder="sk-..." autocomplete="off">
+      <div class="row2">
+        <div><label for="model">모델</label><input id="model" list="modelList" placeholder="모델 이름"><datalist id="modelList"></datalist></div>
+        <div id="baseWrap"><label for="base">Base URL</label><input id="base" placeholder="https://api.openai.com/v1"></div>
+      </div>
+      <div class="warn" id="keyWarn">claude.ai에 게시된 페이지는 보안 정책 때문에 외부 API 호출이 막혀 있어요. 내 API 키로 쓰려면 이 페이지의 HTML 파일을 내려받아 브라우저에서 직접 열거나, 내 서버에 올려서 사용하세요.</div>
+    </div>
+    <div class="mfoot"><button class="btn-o" id="cancel">닫기</button><button class="cta" style="width:auto;padding:8px 18px" id="save">저장</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem("cookflow."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("cookflow."+k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------- example data ---------- */
+const EXAMPLE={kind:"요리",dish:"양갈비 바베큐 + 가리비",summary:"버너 하나짜리 웨버 트래블러에서 불 세기를 바꿔가며 통마늘 → 양파·양송이 → 양갈비 → 가리비·채소 순으로 구워 한 번에 상차림. 손질·마리네이드는 집에서 끝내고(봉투 ①~⑤), 현장에서는 소금·후추와 굽기만.",
+servings:"4명",equipment:"웨버 트래블러 가스그릴 (버너 1개)",total_minutes:58,
+ingredients:[
+{name:"③ 양갈비",prep:"[집] 물기 닦고 올리브유 2~3큰술 + 다진 생로즈마리·타임 발라 지퍼백 (소금 X) → 아이스박스 맨 아래 / [현장] 도착하면 실온에, 굽기 전 겉 기름 눌러 닦고 굵은 허브 조각 털기",seasoning:"그릴망 다시 달군 뒤 소금·후추 (채소보다 넉넉히)",heat:"High → Low",time:"High 2분+2분 → Low 뚜껑 닫고 3~5분 → 레스팅 5분",doneness:"미디엄레어 속 55~57°C, 미디엄 60~63°C (레스팅하며 3~5도 더 오름)",tip:"올리고 2분은 건드리지 않기 · 레스팅은 호일 텐트로 느슨하게, 위에 로즈마리"},
+{name:"① 통마늘",prep:"[집] 겉껍질 몇 겹 벗기고 윗부분 0.5~1cm 자르기 (심지·밑동은 그대로) → 호일 두 겹, 세워서 보관",seasoning:"단면에 올리브유 1작은술 + 앵커 버터 약 5g + 소금 한 꼬집 (가염 버터면 소금 생략)",heat:"Low (가장자리)",time:"25~35분",doneness:"젓가락이 쑥 들어가고 노릇함",tip:"덜 익었으면 양갈비 구울 때 가장자리에 그대로 두기"},
+{name:"② 양파",prep:"[집] 1~1.5cm 가로 링, 물에 불린 이쑤시개로 고정",seasoning:"양면 올리브유 붓질 → 소금·후추",heat:"Medium",time:"10분 (한 번 뒤집기)",doneness:"그릴 자국이 나고 속이 투명해짐",tip:""},
+{name:"② 양송이",prep:"[집] 씻지 말고 키친타월로 닦기, 기둥 떼기",seasoning:"갓 겉면에 올리브유 붓질 → 안쪽에 소금 살짝",heat:"Medium",time:"8~10분 (뒤집지 않기)",doneness:"안쪽에 즙이 찰랑하게 고임",tip:"갓이 그릴에 닿게 올리고, 수평 유지하며 꺼내기"},
+{name:"⑤ 가리비",prep:"[집] 당일 구입, 솔로 껍데기 문질러 씻기 (물에 담그지 않기), 젖은 키친타월 덮어 보관 / 마늘버터: 앵커 버터 50g + 다진 마늘 2~3쪽",seasoning:"입이 벌어지면 위 껍데기 떼고 마늘버터 1작은술 + 후추 (소금 생략) → 다 되면 레몬즙",heat:"Low → Medium",time:"약 4분 (입 벌어질 때까지) + 3~4분",doneness:"살이 하얗게 불투명, 가장자리가 살짝 말리고 탱탱함",tip:"오래 구우면 질겨지니 하얘지면 바로 빼기"},
+{name:"소스: 렌치 · 쯔란 소금",prep:"[집] 렌치: 시판 렌치 6큰술 + 레몬즙 2작은술 + 다진 로즈마리 약간 섞기 / 쯔란 소금: 쯔란 가루 1 : 소금 1 + 고춧가루 약간",seasoning:"렌치는 부드럽고 상큼하게, 쯔란 소금은 진하게 — 번갈아 찍어 먹기",heat:"차갑게",time:"—",doneness:"렌치는 차가운 상태로, 쯔란 소금은 뭉치지 않게 마른 통에",tip:"렌치는 아이스박스에, 상차림 때 꺼내기"},
+{name:"④ 애호박",prep:"[집] 씻고 물기 완전히 닦기 → 꼭지 자르고 1cm 어슷썰기 → 올리브유로 코팅 (아스파라거스와 같은 지퍼백)",seasoning:"그릴에 올리기 직전 소금·후추",heat:"Medium",time:"5~7분 (앞뒤 2~3분, 한 번 뒤집기)",doneness:"겉에 노릇한 색이 나고 속은 살짝 단단함",tip:"오래 구우면 물러져요 · 먹기 직전 레몬즙"},
+{name:"④ 아스파라거스",prep:"[집] 씻고 물기 닦기 → 밑동을 구부려 부러지는 곳에서 자르기 (굵으면 아래 1/3 껍질 벗기기) → 올리브유로 코팅",seasoning:"그릴에 올리기 직전 소금·후추",heat:"Medium",time:"5~7분 (굴려가며, 굵으면 +3분)",doneness:"선명한 초록색이 되고 들었을 때 살짝 휘어짐",tip:"그릴망과 가로 방향으로 놓아야 빠지지 않아요 · 먹기 직전 레몬즙"},
+{name:"④ 방울토마토",prep:"[집] 씻고 꼭지 떼고 물기 닦기 → 물에 10분 불린 꼬치에 4~5개씩 (통에 따로 담아 눌리지 않게)",seasoning:"꼬치째 올리브유를 붓으로 얇게 → 소금·후추",heat:"Medium",time:"4~5분",doneness:"껍질이 살짝 터지기 시작하면 바로 빼기",tip:"그릴 자리가 부족하면 가리비 뚜껑 열 때(+44분) 올리기"}],
+timeline:[
+{offset:-10,heat:"",action:"도착하자마자 ③ 양갈비 봉투를 아이스박스에서 꺼내 실온에 두기",tag:"prep"},
+{offset:0,heat:"High",action:"그릴 펼치고 가스 연결, 기름받이 비었는지 확인 → 뚜껑 닫고 예열 (그릴망에 호일 깔지 않기)",tag:"prep"},
+{offset:8,heat:"Low",action:"브러시로 그릴망 긁고 기름 묻힌 키친타월로 닦기 → ① 통마늘을 호일째 가장자리에 세워 올리기, 뚜껑 닫기",tag:"cook"},
+{offset:21,heat:"Medium",action:"② 양파: 양면 올리브유 + 소금·후추 / 양송이: 갓 겉면 올리브유 + 안쪽 소금 살짝 → 갓이 그릴에 닿게 올리고 뚜껑 닫기",tag:"cook"},
+{offset:26,heat:"Medium",action:"양파만 뒤집기 (양송이는 그대로) → ③ 양갈비 겉 기름 눌러 닦고 굵은 허브 조각 털기",tag:"cook"},
+{offset:31,heat:"High",action:"통마늘 확인 (덜 익었으면 가장자리에 그대로) → 양파·양송이 꺼내 호일로 덮기 → 그릴망 1~2분 다시 달구기",tag:"cook"},
+{offset:33,heat:"High",action:"③ 양갈비에 소금·후추 (넉넉히) → 올리고 2분 건드리지 않기",tag:"cook"},
+{offset:35,heat:"High",action:"양갈비 뒤집어서 2분",tag:"cook"},
+{offset:37,heat:"Low",action:"뚜껑 닫고 3~5분 (미디엄레어 속 55~57°C)",tag:"cook"},
+{offset:40,heat:"Low",action:"⑤ 가리비를 양갈비 주변 빈 곳에 오목한 껍데기가 아래로 가게 올리고 뚜껑 닫기",tag:"cook"},
+{offset:42,heat:"Medium",action:"양갈비 꺼내 5분 레스팅 (호일 텐트 + 로즈마리) → 빈 곳에 ④ 애호박·아스파라거스·토마토 소금·후추 후 굽기",tag:"rest"},
+{offset:44,heat:"Medium",action:"가리비 입이 벌어지면 위 껍데기 떼고 마늘버터 1작은술 + 후추 → 애호박 뒤집고 아스파라거스 굴리기 → 뚜껑 닫기",tag:"cook"},
+{offset:48,heat:"끄기",action:"가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 렌치·쯔란 소금 꺼내기 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기",tag:"serve"}],
+tips:["손질·마리네이드는 집에서: 봉투 ①통마늘 ②양파·양송이 ③양갈비 ④채소 ⑤가리비·마늘버터","소금+후추는 히말라야 소금(갈아서) 2 : 후추 1로 섞은 통 하나로","불이 확 올라오면 고기를 가장자리로 옮기고 Low로","그릴 자리가 부족하면 방울토마토는 가리비 뚜껑 열 때(+44분) 올리기","후식: 위스키 아포가토 (하겐다즈 바닐라 한 스쿱 + 산토리 2큰술)","찍어 먹는 소스: 렌치(레몬·로즈마리 섞음) + 쯔란 소금 두 가지","사용 후 가스 밸브 잠그고 따뜻할 때 브러시 청소"],
+home_prep:[
+{bag:"①",item:"통마늘",task:"겉껍질 몇 겹 벗기고 윗부분 0.5~1cm 자르기 (심지·밑동은 그대로) → 단면에 올리브유 1작은술 + 앵커 버터 약 5g + 소금 한 꼬집 (가염 버터면 소금 생략)",pack:"호일 두 겹, 이음매 위로 꽉 오므려 세워서 보관"},
+{bag:"②",item:"양파",task:"껍질 벗기고 1~1.5cm 가로 링 → 물에 10분 불린 이쑤시개로 고정 (기름·소금은 현장에서)",pack:"밀폐 통"},
+{bag:"②",item:"양송이",task:"씻지 말고 키친타월로 흙 닦기 → 기둥 떼기 (기름·소금은 현장에서)",pack:"양파와 같은 통, 키친타월 깔기"},
+{bag:"③",item:"양갈비 (1kg)",task:"키친타월로 물기 닦기 → 올리브유 2~3큰술 + 다진 생로즈마리 2~3줄기 + 생타임 3~4줄기 바르기. 소금은 굽기 직전에 (미리 넣으면 물이 빠져 시어링이 안 됨)",pack:"지퍼백 → 아이스박스 맨 아래"},
+{bag:"④",item:"애호박 · 아스파라거스",task:"씻고 물기 완전히 닦기 → 애호박 1cm 어슷썰기, 아스파라거스 밑동을 구부려 부러지는 곳에서 자르기 (굵으면 아래 1/3 껍질 벗기기) → 올리브유 1큰술로 코팅",pack:"지퍼백"},
+{bag:"④",item:"방울토마토",task:"씻고 꼭지 떼고 물기 닦기 → 물에 10분 불린 꼬치에 4~5개씩",pack:"통에 따로 (눌려 터지지 않게)"},
+{bag:"⑤",item:"가리비",task:"당일 구입 → 솔로 껍데기 문질러 씻기 (물에 오래 담그지 않기), 입 벌어진 채 안 닫히는 건 버리기",pack:"통에 젖은 키친타월 덮기 (밀폐·물에 담그기 X), 아이스박스 아래"},
+{bag:"⑤",item:"마늘버터",task:"말랑한 앵커 버터 50g + 곱게 다진 마늘 2~3쪽 섞기",pack:"작은 밀폐 통"},
+{bag:"",item:"렌치 소스",task:"시판 렌치 6큰술 + 레몬즙 2작은술 + 다진 로즈마리 약간 섞기",pack:"작은 밀폐 통, 아이스박스"},
+{bag:"",item:"쯔란 소금",task:"쯔란 가루 1 : 소금 1 + 고춧가루 약간 섞기",pack:"작은 마른 통"},
+{bag:"",item:"소금 + 후추",task:"히말라야 소금 갈아서 후추와 2 : 1로 섞기",pack:"작은 통"},
+{bag:"",item:"레몬",task:"반 개는 즙용, 반 개는 웨지로 자르기",pack:"작은 통"},
+{bag:"",item:"후식 (하겐다즈)",task:"출발 직전 냉동실에서 꺼내 신문지·수건으로 감싸기",pack:"아이스박스 맨 아래"}],
+supplies:[
+{name:"양갈비 1kg",cat:"재료"},{name:"통마늘",cat:"재료"},{name:"양파",cat:"재료"},{name:"양송이",cat:"재료"},{name:"애호박",cat:"재료"},{name:"아스파라거스",cat:"재료"},{name:"방울토마토",cat:"재료"},{name:"가리비",cat:"재료"},{name:"레몬",cat:"재료"},{name:"하겐다즈 바닐라",cat:"재료"},
+{name:"올리브유",cat:"양념"},{name:"히말라야 소금",cat:"양념"},{name:"후추",cat:"양념"},{name:"앵커 버터",cat:"양념"},{name:"생로즈마리",cat:"양념"},{name:"생타임",cat:"양념"},{name:"마늘 (마늘버터용)",cat:"양념"},{name:"렌치 소스 (시판)",cat:"양념"},{name:"쯔란 가루",cat:"양념"},{name:"고춧가루",cat:"양념"},
+{name:"호일",cat:"도구"},{name:"이쑤시개 / 꼬치",cat:"도구"},{name:"밀폐 통",cat:"도구"},{name:"고기 온도계",cat:"도구"},{name:"키친타월",cat:"도구"},{name:"주방 가위",cat:"도구"},
+{name:"산토리 위스키",cat:"음료"},{name:"토닉워터 · 탄산수",cat:"음료"}]};
+const EXAMPLE_FORM={dish:"양갈비 바베큐 + 가리비",people:"4명",start:"18:10",gear:"웨버 트래블러 가스그릴(버너 1개)",extra:"집에서 손질·마리네이드 완료. 양갈비는 오일+허브+소금+후추, 가니시는 올리브유·소금·후추·레몬즙, 통마늘 버터 호일구이, 가리비는 마늘버터. 6시 도착, 6시 10분 시작."};
+const EX_HIGHBALL={kind:"칵테일",dish:"산토리 토닉 하이볼",summary:"산토리 가쿠빈을 토닉워터로 채운 하이볼. 잔·위스키·토닉을 모두 차갑게 하고, 한 번만 저어 탄산을 살리는 게 핵심.",
+servings:"4잔",equipment:"하이볼 잔 · 지거 · 바 스푼",total_minutes:3,
+ingredients:[
+{name:"산토리 위스키 (가쿠빈)",prep:"잔당 45ml 계량 (지거, 없으면 소주잔 약 1잔 반)",seasoning:"토닉과 1:3 (진하게) ~ 1:4 (가볍게)",heat:"차갑게",time:"—",doneness:"첫 모금에 위스키 향이 살짝, 끝맛이 쌉쌀하면 OK",tip:"병째 냉동실에 넣어 두면 더 깔끔해요"},
+{name:"토닉워터",prep:"최대한 차갑게, 따르기 직전에 개봉",seasoning:"잔당 135ml · 덜 달게 하려면 탄산수와 반반",heat:"차갑게",time:"—",doneness:"따를 때 기포가 오래 올라오면 탄산이 살아 있는 것",tip:"얼음에 직접 붓지 말고 잔 벽을 따라"},
+{name:"얼음",prep:"잔마다 가득 (큰 얼음일수록 덜 녹음)",seasoning:"—",heat:"냉동",time:"잔 칠링 10초",doneness:"잔 겉에 물방울이 맺히면 충분히 차가움",tip:"녹은 물은 버리고 시작"},
+{name:"레몬 · 로즈마리",prep:"레몬 웨지, 로즈마리 한 줄기씩",seasoning:"레몬은 잔 위에서 짜 넣기 · 로즈마리는 손바닥에 탁 쳐서 향 내기",heat:"실온",time:"—",doneness:"향이 올라오면 완성",tip:"양갈비에 쓰고 남은 로즈마리 활용"}],
+timeline:[
+{offset:0,heat:"차갑게",action:"잔에 얼음을 가득 채우고 10초 저어 잔 칠링 → 녹은 물 버리기",tag:"prep"},
+{offset:1,heat:"차갑게",action:"위스키 45ml씩 붓고 몇 번 저은 뒤 줄어든 만큼 얼음 보충",tag:"cook"},
+{offset:2,heat:"차갑게",action:"토닉워터 135ml를 잔 벽을 따라 천천히 붓고, 바 스푼으로 아래에서 위로 한 번만 들어 올리듯 섞기",tag:"cook"},
+{offset:3,heat:"",action:"레몬 짜 넣고 로즈마리 꽂아 서빙",tag:"serve"}],
+tips:["젓는 건 한 번만, 많이 저으면 탄산이 날아가요","진하게 1:3, 가볍게 1:4","술을 안 마시는 사람은 토닉 + 레몬 + 로즈마리로 무알콜 버전"],
+home_prep:[
+{bag:"",item:"토닉워터 · 탄산수",task:"전날부터 냉장 → 아이스박스로",pack:"아이스박스"},
+{bag:"",item:"얼음",task:"잔당 한 컵 이상 넉넉히",pack:"아이스박스 (봉지 얼음)"},
+{bag:"",item:"레몬 · 로즈마리",task:"레몬 웨지로 자르기, 로즈마리 줄기 따로 남기기",pack:"작은 통"}],
+supplies:[{name:"산토리 위스키 (가쿠빈)",cat:"음료"},{name:"토닉워터",cat:"음료"},{name:"탄산수 (선택)",cat:"음료"},{name:"얼음",cat:"재료"},{name:"레몬",cat:"재료"},{name:"로즈마리",cat:"재료"},
+{name:"하이볼 잔 4개",cat:"도구"},{name:"지거 또는 계량컵",cat:"도구"},{name:"바 스푼 또는 긴 젓가락",cat:"도구"}]};
+const EX_HIGHBALL_FORM={dish:"산토리 토닉 하이볼",people:"4잔",start:"18:55",gear:"하이볼 잔, 지거, 바 스푼",extra:"양갈비 상차림(6:58)에 맞춰 내기. 레몬, 로즈마리 가니시."};
+
+const EX_AFFOGATO={kind:"디저트",dish:"위스키 아포가토",summary:"하겐다즈 바닐라 한 스쿱에 산토리 위스키를 부어 바로 먹는 어른용 디저트. 아이스크림은 단단할 때, 위스키는 먹기 직전에.",
+servings:"4인",equipment:"아이스크림 스쿱 · 작은 그릇",total_minutes:3,
+ingredients:[
+{name:"하겐다즈 바닐라",prep:"출발 직전 냉동실에서 꺼내 신문지·수건으로 감싸 아이스박스 맨 아래",seasoning:"1인 한 스쿱",heat:"냉동",time:"꺼내서 1~2분",doneness:"스쿱이 겉만 살짝 부드럽게 들어가면 OK, 흐르기 시작하면 늦음",tip:"먹기 직전까지 열지 않기"},
+{name:"산토리 위스키",prep:"1인당 2큰술 (30ml)",seasoning:"가쿠빈은 순해서 조금 넉넉히, 히비키·야마자키면 향이 더 진함",heat:"실온",time:"—",doneness:"아이스크림 가장자리가 녹아 크림처럼 섞이면 먹기 좋은 때",tip:"술을 안 마시면 커피나 꿀로 대신"}],
+timeline:[
+{offset:0,heat:"냉동",action:"아이스크림 꺼내 1~2분 두기 → 그릇과 스쿱, 위스키 준비",tag:"prep"},
+{offset:2,heat:"",action:"그릇에 아이스크림 한 스쿱 → 위스키 2큰술 붓고 바로 서빙",tag:"serve"}],
+tips:["위스키는 먹기 직전에 부어야 아이스크림이 덜 녹아요","그릇을 아이스박스에 넣어 차갑게 해 두면 더 천천히 녹아요","술을 안 마시는 사람은 위스키 대신 커피나 꿀"],
+home_prep:[
+{bag:"",item:"하겐다즈",task:"출발 직전 냉동실에서 꺼내 신문지·수건으로 두껍게 감싸기",pack:"아이스박스 맨 아래"}],
+supplies:[{name:"하겐다즈 바닐라",cat:"재료"},{name:"산토리 위스키",cat:"음료"},
+{name:"아이스크림 스쿱 또는 큰 숟가락",cat:"도구"},{name:"작은 그릇 4개",cat:"도구"},{name:"신문지 또는 수건",cat:"도구"}]};
+const EX_AFFOGATO_FORM={dish:"위스키 아포가토",people:"4인",start:"19:20",gear:"아이스크림 스쿱, 작은 그릇",extra:"하겐다즈 바닐라, 산토리 위스키. 식사 후 디저트, 다른 토핑 없이."};
+const EXTRA_EXAMPLES=[[EX_HIGHBALL,EX_HIGHBALL_FORM],[EX_AFFOGATO,EX_AFFOGATO_FORM]];
+const EXAMPLE_VER=7, OLD_EXAMPLE_SUMMARY="버너 하나짜리 포터블 가스그릴에서 불 세기를 바꿔가며 가니시와 양갈비를 순서대로 굽는 구성. 시즈닝은 올리브유·소금·후추·레몬즙으로 단순하게.";
+
+/* ---------- pages ---------- */
+const MAXP=5, COLORS=["#14b19a","#e8833a","#5b7fd6","#c2539a","#8a9a2b"];
+const FIELDS=["dish","people","start","gear","extra"];
+let view="page"; const busy=new Set(), errs={};
+const uid=()=>"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let pages=store.get("pages",null);
+function freeColor(){const used=pages.map(p=>p.color);for(let i=0;i<COLORS.length;i++)if(!used.includes(i))return i;return pages.length%COLORS.length;}
+function makePage(data,form){const f=Object.assign({dish:"",people:"",start:"18:10",gear:"",extra:""},form||{});
+  return {id:uid(),color:freeColor(),form:f,data:data||null,start:f.start||"18:10",checked:[]};}
+if(!Array.isArray(pages)||!pages.length){pages=[];
+  pages.push(makePage(EXAMPLE,EXAMPLE_FORM));EXTRA_EXAMPLES.forEach(([d,f])=>pages.push(makePage(d,f)));store.set("exampleVer",EXAMPLE_VER);}
+else if(store.get("exampleVer",1)<EXAMPLE_VER){
+  /* 예전 기본 예시를 손대지 않은 페이지는 새 예시로 교체, 고친 적 있으면 새 페이지로 추가 */
+  const i=pages.findIndex(p=>p.data&&p.data.summary===OLD_EXAMPLE_SUMMARY);
+  if(i>-1){const np=makePage(EXAMPLE,EXAMPLE_FORM);np.id=pages[i].id;np.color=pages[i].color;pages[i]=np;}
+  else if(pages.length<MAXP&&!pages.some(p=>p.data&&p.data.dish===EXAMPLE.dish))pages.unshift(makePage(EXAMPLE,EXAMPLE_FORM));
+  EXTRA_EXAMPLES.forEach(([d,f])=>{if(pages.length<MAXP&&!pages.some(p=>p.data&&(p.data.dish===d.dish||p.data.dish===d.dish+" + 구운 사과")))pages.push(makePage(d,f));});
+  /* v5: 묶여 있던 ④ 채소 카드를 개별 카드로 분리 (다른 수정 내용은 유지) */
+  const SPLIT=EXAMPLE.ingredients.filter(i=>/^④ (애호박|아스파라거스|방울토마토)$/.test(i.name));
+  pages.forEach(p=>{if(!p.data||!Array.isArray(p.data.ingredients))return;const k=p.data.ingredients.findIndex(i=>i.name==="④ 애호박 · 아스파라거스 · 방울토마토");
+    if(k>-1)p.data.ingredients.splice(k,1,...SPLIT.map(i=>Object.assign({},i)));});
+  /* v6: 디저트는 위스키 아포가토만 (구운 사과 제외) */
+  pages.forEach((p,k)=>{if(p.data&&p.data.dish==="위스키 아포가토 + 구운 사과"){const np=makePage(EX_AFFOGATO,Object.assign({},EX_AFFOGATO_FORM,{start:p.start||EX_AFFOGATO_FORM.start}));np.id=p.id;np.color=p.color;pages[k]=np;}
+    if(p.data&&p.data.dish===EXAMPLE.dish){const d=p.data;
+      if(Array.isArray(d.tips))d.tips=d.tips.map(t=>/^후식: 구운 사과/.test(t)?"후식: 위스키 아포가토 (하겐다즈 바닐라 한 스쿱 + 산토리 2큰술)":t);
+      if(Array.isArray(d.home_prep))d.home_prep=d.home_prep.map(h=>h.item==="후식 재료"?{bag:"",item:"후식 (하겐다즈)",task:"출발 직전 냉동실에서 꺼내 신문지·수건으로 감싸기",pack:"아이스박스 맨 아래"}:h);
+      if(Array.isArray(d.supplies))d.supplies=d.supplies.filter(x=>!(x.name==="사과"&&x.cat==="재료")&&!(x.name==="꿀 · 시나몬"&&x.cat==="양념"));}});
+  /* v7: 양갈비 소스(렌치 + 쯔란 소금) 추가 */
+  pages.forEach(p=>{const d=p.data;if(!d||d.dish!==EXAMPLE.dish)return;
+    const src=(arr,f)=>EXAMPLE[arr].filter(f).map(x=>Object.assign({},x));
+    if(Array.isArray(d.ingredients)&&!d.ingredients.some(i=>/렌치/.test(i.name))){const at=d.ingredients.findIndex(i=>/^④/.test(i.name));d.ingredients.splice(at>-1?at:d.ingredients.length,0,...src("ingredients",i=>/렌치/.test(i.name)));}
+    if(Array.isArray(d.home_prep)&&!d.home_prep.some(h=>/렌치|쯔란/.test(h.item))){const at=d.home_prep.findIndex(h=>h.item==="소금 + 후추");d.home_prep.splice(at>-1?at:d.home_prep.length,0,...src("home_prep",h=>/렌치|쯔란/.test(h.item)));}
+    if(Array.isArray(d.supplies))src("supplies",x=>/렌치|쯔란|고춧가루/.test(x.name)).forEach(x=>{if(!d.supplies.some(y=>y.name===x.name))d.supplies.push(x);});
+    if(Array.isArray(d.tips)&&!d.tips.some(t=>/렌치/.test(t)))d.tips.push("찍어 먹는 소스: 렌치(레몬·로즈마리 섞음) + 쯔란 소금 두 가지");
+    if(Array.isArray(d.timeline))d.timeline.forEach(t=>{if(t.action==="가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기")t.action="가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 렌치·쯔란 소금 꺼내기 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기";});});
+  store.set("pages",pages);store.set("exampleVer",EXAMPLE_VER);}
+pages=pages.slice(0,MAXP);
+let activeId=store.get("active",pages[0].id); if(!pages.some(p=>p.id===activeId))activeId=pages[0].id;
+const byId=id=>pages.find(p=>p.id===id);
+const page=()=>byId(activeId);
+function save(){store.set("pages",pages);store.set("active",activeId);}
+const pname=p=>(p.data&&p.data.dish)||p.form.dish.trim()||"새 메뉴";
+const sorted=d=>((d&&d.timeline)||[]).slice().sort((a,b)=>a.offset-b.offset);
+function mins(start,off){const [H,M]=(start||"18:10").split(":").map(Number);return H*60+M+Number(off||0);}
+function fmt(t){t=((t%1440)+1440)%1440;return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");}
+function heatCls(h){h=(h||"").toLowerCase();
+  if(/차갑|냉|얼음|칠링|cold|ice/.test(h))return"h-cold";
+  if(/high|강|센|뜨겁/.test(h))return"h-high"; if(/med|중/.test(h))return"h-med";
+  if(/low|약/.test(h))return"h-low"; if(h)return"h-off"; return"";}
+function toggleCheck(p,k,on){p.checked=p.checked.filter(x=>x!==k);if(on)p.checked.push(k);
+  if(p.run&&p.data&&p.checked.length>=sorted(p.data).length){p.run=null;keepAwake();}
+  save();renderTabs();updateRunUI();}
+
+const KIND_ICON={"요리":"🍳","디저트":"🍨","음료":"🥤","칵테일":"🍸","베이킹":"🥐","코스":"🍽"};
+/* ---------- home prep & supplies ---------- */
+const SUPCATS=["재료","양념","도구","음료","기타"];
+const hpKey=h=>(h.item||"")+"|"+(h.task||"");
+const suKey=x=>(x.cat||"")+"|"+(x.name||"");
+function ensureLists(p){if(!Array.isArray(p.prepChecked))p.prepChecked=[];if(!Array.isArray(p.supChecked))p.supChecked=[];}
+function toggleList(p,field,key,on){ensureLists(p);p[field]=p[field].filter(x=>x!==key);if(on)p[field].push(key);save();}
+function renderLists(p,d){ensureLists(p);
+  const hp=(d&&d.home_prep)||[], su=(d&&d.supplies)||[];
+  const hpDone=hp.filter(h=>p.prepChecked.includes(hpKey(h))).length, suDone=su.filter(x=>p.supChecked.includes(suKey(x))).length;
+  $("#hpCnt").textContent=hp.length?hpDone+"/"+hp.length:"";$("#supCnt").textContent=su.length?suDone+"/"+su.length:"";
+  $("#hp").innerHTML=hp.length?hp.map(h=>{const k=hpKey(h),on=p.prepChecked.includes(k);
+    return `<label class="crow${on?" checked":""}"><input type="checkbox" data-hk="${esc(k)}"${on?" checked":""}>
+      <div><div class="nm">${h.bag?`<span class="bag">${esc(h.bag)}</span>`:""}${esc(h.item)}</div>
+      ${h.task?`<div class="ds">${esc(h.task)}</div>`:""}${h.pack?`<div class="pk">📦 ${esc(h.pack)}</div>`:""}</div></label>`;}).join("")
+    :'<div class="empty">집에서 미리 할 손질·마리네이드가 여기에 나와요. ✏️ 수정으로 직접 추가할 수 있어요.</div>';
+  if(!su.length){$("#sup").innerHTML='<div class="empty">챙겨 갈 재료·양념·도구가 여기에 나와요. ✏️ 수정으로 직접 추가할 수 있어요.</div>';return;}
+  const cats=[...SUPCATS,...new Set(su.map(x=>x.cat).filter(c=>c&&!SUPCATS.includes(c)))];
+  $("#sup").innerHTML=cats.map(c=>{const items=su.filter(x=>(x.cat||"기타")===c);if(!items.length)return "";
+    return `<div class="sgrp"><h4>${esc(c)} · ${items.filter(x=>p.supChecked.includes(suKey(x))).length}/${items.length}</h4><div class="sup">${items.map(x=>{const k=suKey(x),on=p.supChecked.includes(k);
+      return `<label class="schip${on?" checked":""}"><input type="checkbox" data-sk="${esc(k)}"${on?" checked":""}><span>${esc(x.name)}</span></label>`;}).join("")}</div></div>`;}).join("");}
+$("#hp").addEventListener("change",e=>{const k=e.target.dataset.hk;if(k==null)return;toggleList(page(),"prepChecked",k,e.target.checked);renderLists(page(),page().data);});
+$("#sup").addEventListener("change",e=>{const k=e.target.dataset.sk;if(k==null)return;toggleList(page(),"supChecked",k,e.target.checked);renderLists(page(),page().data);});
+$("#hpReset").onclick=()=>{const p=page();p.prepChecked=[];save();renderLists(p,p.data);};
+$("#supReset").onclick=()=>{const p=page();p.supChecked=[];save();renderLists(p,p.data);};
+$("#hpCopy").onclick=()=>{const p=page(),d=p.data;if(!d||!(d.home_prep||[]).length)return;
+  copyText($("#hpCopy"),pname(p)+" 사전 준비\n"+d.home_prep.map(h=>"☐ "+(h.bag?h.bag+" ":"")+h.item+(h.task?" — "+h.task:"")+(h.pack?" (📦 "+h.pack+")":"")).join("\n"));};
+$("#supCopy").onclick=()=>{const p=page(),d=p.data;if(!d||!(d.supplies||[]).length)return;
+  const cats=[...new Set([...SUPCATS,...d.supplies.map(x=>x.cat||"기타")])];
+  copyText($("#supCopy"),pname(p)+" 준비물\n"+cats.map(c=>{const it=d.supplies.filter(x=>(x.cat||"기타")===c);return it.length?"["+c+"]\n"+it.map(x=>"☐ "+x.name).join("\n"):"";}).filter(Boolean).join("\n"));};
+
+/* ---------- render: one page ---------- */
+function renderPage(){const p=page(),d=p.data,ed=drafts[p.id];
+  $("#midCol").classList.toggle("editing",!!ed);$("#editBtn").textContent=d?"✏️ 전체 편집":"✏️ 직접 작성";
+  $("#editCancel").classList.remove("arm");$("#editCancel").textContent="취소";
+  if(ed){renderEdit(p,ed);return;}
+  $("#tips").className="tips";
+  if(!d){
+    $("#hero").innerHTML=`<h2>${esc(pname(p))}</h2><p>아직 가이드가 없어요. 왼쪽에 메뉴와 조건을 입력하고 <b>AI 가이드 만들기</b>를 누르거나, 오른쪽 위 <b>✏️ 직접 작성</b>으로 직접 써 보세요.</p>`;
+    $("#ing").innerHTML='<div class="empty">재료별 카드가 여기에 나와요.</div>';$("#ingCnt").textContent="";syncIngAll();
+    $("#tl").innerHTML='<div class="empty">시간별 순서가 여기에 나와요.</div>';
+    $("#tips").innerHTML="<li>—</li>";renderLists(p,null);return;}
+  $("#hero").innerHTML=`<h2>${esc(d.dish)}</h2><p>${esc(d.summary)}</p><div class="meta">
+    ${d.kind?`<span>${KIND_ICON[d.kind]||"✨"} ${esc(d.kind)}</span>`:""}${d.servings?`<span>👥 ${esc(d.servings)}</span>`:""}${d.equipment?`<span>🧰 ${esc(d.equipment)}</span>`:""}
+    ${d.total_minutes?`<span>⏱ 약 ${esc(d.total_minutes)}분</span>`:""}<span>🕕 ${esc(p.start)} 시작</span></div>`;
+  const ings=d.ingredients||[];$("#ingCnt").textContent=ings.length+"개";
+  $("#ing").innerHTML=ings.map((i,n)=>`<details class="icard" open><summary>
+    <h3><span class="nm">${esc(i.name)}</span><span class="hr">${i.heat?`<span class="heat ${heatCls(i.heat)}">${esc(i.heat)}</span>`:""}<button type="button" class="pen" data-act="edit-start" data-sec="ing" data-n="${n}" aria-label="${esc(i.name)} 수정">✏️</button></span></h3>
+    <div class="peek">⏱ ${esc(i.time)}${i.doneness?` · 완성: ${esc(i.doneness)}`:""}</div></summary>
+    <div class="body"><div class="kv"><b>손질 · 준비</b>${esc(i.prep)}</div>
+    <div class="kv"><b>시즈닝 · 맛내기</b>${esc(i.seasoning)}</div>
+    <div class="kv"><b>시간</b>${esc(i.time)}</div>
+    <div class="done"><b>완성 판단</b>${esc(i.doneness)}</div>
+    ${i.tip?`<div class="kv" style="color:var(--teal-d)">💡 ${esc(i.tip)}</div>`:""}</div></details>`).join("");
+  syncIngAll();
+  $("#tl").innerHTML=sorted(d).map((s,k)=>{const on=p.checked.includes(k);return `<div class="step ${esc(s.tag||"cook")}${on?" checked":""}">
+    <div><div class="t">${fmt(mins(p.start,s.offset))}</div><div class="o">${s.offset>=0?"+":""}${esc(s.offset)}분</div></div>
+    <div class="a">${s.heat?`<span class="heat ${heatCls(s.heat)}">${esc(s.heat)}</span>`:""}${esc(s.action)}</div>
+    <div class="sa"><input type="checkbox" aria-label="완료" data-k="${k}"${on?" checked":""}><button type="button" class="pen" data-act="edit-start" data-sec="tl" data-n="${k}" aria-label="이 단계 수정">✏️</button></div></div>`}).join("");
+  $("#tips").innerHTML=(d.tips||[]).map(t=>`<li>${esc(t)}</li>`).join("")||"<li>—</li>";
+  renderLists(p,d);
+  updateRunUI();
+}
+$("#tl").addEventListener("change",e=>{if(e.target.type!=="checkbox")return;
+  e.target.closest(".step").classList.toggle("checked",e.target.checked);toggleCheck(page(),+e.target.dataset.k,e.target.checked);});
+
+/* ---------- edit ---------- */
+const drafts={}, origs={};
+const TAGS={prep:"준비",cook:"조리",rest:"휴지",serve:"상차림"};
+const blankIng=()=>({name:"",prep:"",seasoning:"",heat:"",time:"",doneness:"",tip:""});
+const clone=o=>JSON.parse(JSON.stringify(o));
+function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+function startEdit(){const p=page();if(drafts[p.id])return;
+  const d=p.data?clone(p.data):{dish:p.form.dish||"",summary:"",servings:p.form.people||"",equipment:p.form.gear||"",total_minutes:"",
+    ingredients:[blankIng()],timeline:[{offset:0,heat:"",action:"",tag:"prep"}],tips:[],home_prep:[],supplies:[]};
+  d.ingredients=(d.ingredients||[]).map(i=>Object.assign(blankIng(),i));d.timeline=sorted(d);d.tips=(d.tips||[]).slice();
+  d.home_prep=(d.home_prep||[]).map(h=>Object.assign({bag:"",item:"",task:"",pack:""},h));d.supplies=(d.supplies||[]).map(x=>Object.assign({name:"",cat:"재료"},x));
+  ["kind","dish","summary","servings","equipment","total_minutes"].forEach(k=>{if(d[k]==null)d[k]="";});
+  drafts[p.id]=d;origs[p.id]=JSON.stringify(d);$("#ingSec").open=true;renderPage();
+  const f=$("#hero [data-f=dish]");if(f&&!f.value)f.focus();}
+function cancelEdit(force){const p=page(),btn=$("#editCancel");if(!drafts[p.id])return;
+  if(!force&&JSON.stringify(drafts[p.id])!==origs[p.id]&&!btn.classList.contains("arm")){
+    btn.classList.add("arm");btn.textContent="버리고 나갈까요?";setTimeout(()=>{btn.classList.remove("arm");btn.textContent="취소";},2500);return;}
+  delete drafts[p.id];delete origs[p.id];renderPage();}
+function saveEdit(){const p=page(),d=drafts[p.id];if(!d)return;
+  const c=v=>String(v==null?"":v).trim();
+  const out={kind:c(d.kind),dish:c(d.dish)||c(p.form.dish)||"새 메뉴",summary:c(d.summary),servings:c(d.servings),equipment:c(d.equipment),
+    total_minutes:Math.max(0,parseInt(d.total_minutes,10)||0)||"",
+    ingredients:d.ingredients.map(i=>({name:c(i.name),prep:c(i.prep),seasoning:c(i.seasoning),heat:c(i.heat),time:c(i.time),doneness:c(i.doneness),tip:c(i.tip)}))
+      .filter(i=>Object.values(i).some(Boolean)).map(i=>Object.assign(i,{name:i.name||"재료"})),
+    timeline:d.timeline.map(s=>({offset:Math.round(Number(s.offset))||0,heat:c(s.heat),action:c(s.action),tag:TAGS[s.tag]?s.tag:"cook"})).filter(s=>s.action),
+    tips:d.tips.map(c).filter(Boolean),
+    home_prep:d.home_prep.map(h=>({bag:c(h.bag),item:c(h.item),task:c(h.task),pack:c(h.pack)})).filter(h=>h.item||h.task).map(h=>Object.assign(h,{item:h.item||"준비"})),
+    supplies:d.supplies.map(x=>({name:c(x.name),cat:c(x.cat)||"기타"})).filter(x=>x.name)};
+  // keep checks / sent alarms for steps that didn't change
+  const key=s=>s.offset+"|"+s.action, oldS=sorted(p.data), newS=sorted(out);
+  const remap=arr=>{const ks=new Set((arr||[]).map(k=>oldS[k]&&key(oldS[k])).filter(Boolean));return newS.map((s,k)=>ks.has(key(s))?k:-1).filter(k=>k>=0);};
+  p.checked=remap(p.checked);
+  if(p.run){const now=Date.now();p.run.notified=remap(p.run.notified);
+    newS.forEach((s,k)=>{if(p.run.t0+s.offset*60000<=now&&!p.run.notified.includes(k))p.run.notified.push(k);});  // no alarm burst for steps already past
+    p.run.finished=!newS.length||now>=p.run.t0+newS[newS.length-1].offset*60000;
+    if(!newS.length)p.run=null;}
+  p.data=out;delete drafts[p.id];delete origs[p.id];save();renderTabs();renderPage();keepAwake();}
+function focusEdit(sec,n){const i=n==null?0:+n;
+  const sel={hero:'#hero [data-f=dish]',ing:`#ing .icard:nth-of-type(${i+1}) [data-g=${n==null?"name":"prep"}]`,
+    tl:`#tl .step:nth-of-type(${i+1}) textarea`,hp:'#hp .erow4:first-child [data-h=item], #hp [data-act=hp-add]',sup:'#sup .erow3:first-child [data-s=name], #sup [data-act=sup-add]',tips:'#tips li:first-child input, #tips [data-act=tip-add]'}[sec];
+  const el=sel&&document.querySelector(sel);if(!el)return;
+  const box=el.closest(".icard,.step,li,.erow4,.erow3")||el;box.scrollIntoView({block:"center",behavior:"smooth"});
+  setTimeout(()=>{try{el.focus({preventScroll:true});}catch(_){}},250);}
+function ta(v,attrs,ph){return `<textarea ${attrs} rows="1" placeholder="${esc(ph||"")}">${esc(v)}</textarea>`;}
+function renderEdit(p,d){
+  $("#hero").innerHTML=`<div class="ed"><div class="row3"><div style="flex:2"><label style="margin-top:0">이름</label><input data-f="dish" value="${esc(d.dish)}" placeholder="예: 연어 스테이크 / 토닉 하이볼"></div>
+    <div><label style="margin-top:0">종류</label><input data-f="kind" list="kindList" value="${esc(d.kind)}" placeholder="요리 · 디저트 · 음료"></div></div>
+    <label>요약</label>${ta(d.summary,'data-f="summary"',"한두 문장 설명")}
+    <div class="row3"><div><label>인원</label><input data-f="servings" value="${esc(d.servings)}" placeholder="2명"></div>
+    <div><label>도구 · 장비</label><input data-f="equipment" value="${esc(d.equipment)}" placeholder="예: 가스그릴 / 셰이커"></div>
+    <div><label>총 시간(분)</label><input type="number" min="0" inputmode="numeric" data-f="total_minutes" value="${esc(d.total_minutes)}"></div></div></div>`;
+  $("#ingCnt").textContent=d.ingredients.length+"개";
+  const F=[["prep","손질 · 준비"],["seasoning","시즈닝 · 맛내기 (비율)"],["time","시간"],["doneness","완성 판단"],["tip","팁 (선택)"]];
+  $("#ing").innerHTML=d.ingredients.map((i,n)=>`<div class="icard edit" data-i="${n}"><div class="eh">
+      <input class="nm-in" data-g="name" value="${esc(i.name)}" placeholder="재료 이름" aria-label="재료 이름">
+      <input class="heat-in" data-g="heat" list="heatList" value="${esc(i.heat)}" placeholder="불 · 온도" aria-label="불 · 온도">
+      <span class="acts2"><button type="button" class="mini" data-act="ing-up" aria-label="위로"${n?"":" disabled"}>↑</button><button type="button" class="mini" data-act="ing-down" aria-label="아래로"${n<d.ingredients.length-1?"":" disabled"}>↓</button><button type="button" class="mini del" data-act="ing-del" aria-label="재료 삭제">🗑</button></span></div>
+      ${F.map(([k,l])=>`<label>${l}</label>${ta(i[k],`data-g="${k}"`)}`).join("")}</div>`).join("")
+    +`<button type="button" class="addbtn" data-act="ing-add">＋ 재료 추가</button>`;
+  $("#tl").innerHTML=d.timeline.map((s,n)=>{const tag=TAGS[s.tag]?s.tag:"cook";return `<div class="step edit ${tag}" data-i="${n}">
+      <div><input type="number" step="1" inputmode="numeric" data-t="offset" value="${esc(s.offset)}" aria-label="시작 후 몇 분"><div class="o">분 → <b class="clk">${fmt(mins(p.start,Math.round(Number(s.offset))||0))}</b></div></div>
+      <div><div class="erow"><select data-t="tag" aria-label="단계 종류">${Object.entries(TAGS).map(([k,v])=>`<option value="${k}"${tag===k?" selected":""}>${v}</option>`).join("")}</select>
+        <input data-t="heat" list="heatList" value="${esc(s.heat)}" placeholder="불 · 온도" aria-label="불 · 온도"></div>${ta(s.action,'data-t="action"',"할 일")}</div>
+      <button type="button" class="mini del" data-act="tl-del" aria-label="단계 삭제">🗑</button></div>`;}).join("")
+    +`<button type="button" class="addbtn" data-act="tl-add">＋ 단계 추가</button>`;
+  $("#tips").className="tips edit";
+  $("#tips").innerHTML=d.tips.map((t,n)=>`<li data-i="${n}"><input data-k="tip" value="${esc(t)}" placeholder="주의·팁" aria-label="팁"><button type="button" class="mini del" data-act="tip-del" aria-label="팁 삭제">🗑</button></li>`).join("")
+    +`<li class="addli"><button type="button" class="addbtn" data-act="tip-add" style="width:100%">＋ 팁 추가</button></li>`;
+  $("#hpCnt").textContent=$("#supCnt").textContent="";
+  $("#hp").innerHTML=d.home_prep.map((h,n)=>`<div class="erow4" data-i="${n}"><input data-h="bag" value="${esc(h.bag)}" placeholder="①" aria-label="봉투 번호">
+      <div class="f2"><input data-h="item" value="${esc(h.item)}" placeholder="재료 (예: 통마늘)" aria-label="재료">${ta(h.task,'data-h="task"',"할 일 (손질·마리네이드)")}<input data-h="pack" value="${esc(h.pack)}" placeholder="포장·보관 (선택)" aria-label="포장"></div>
+      <button type="button" class="mini del" data-act="hp-del" aria-label="삭제">🗑</button></div>`).join("")
+    +`<button type="button" class="addbtn" data-act="hp-add">＋ 사전 준비 추가</button>`;
+  $("#sup").innerHTML=d.supplies.map((x,n)=>`<div class="erow3" data-i="${n}"><input data-s="name" value="${esc(x.name)}" placeholder="준비물" aria-label="준비물">
+      <select data-s="cat" aria-label="분류">${[...new Set([...SUPCATS,x.cat||"기타"])].map(c=>`<option${(x.cat||"기타")===c?" selected":""}>${esc(c)}</option>`).join("")}</select>
+      <button type="button" class="mini del" data-act="sup-del" aria-label="삭제">🗑</button></div>`).join("")
+    +`<button type="button" class="addbtn" data-act="sup-add" style="width:100%">＋ 준비물 추가</button>`;
+  document.querySelectorAll("#midCol textarea").forEach(grow);}
+$("#midCol").addEventListener("input",e=>{const d=drafts[activeId],el=e.target;if(!d)return;
+  if(el.tagName==="TEXTAREA")grow(el);
+  const row=el.closest("[data-i]"),i=row?+row.dataset.i:-1;
+  if(el.dataset.f)d[el.dataset.f]=el.value;
+  else if(el.dataset.g)d.ingredients[i][el.dataset.g]=el.value;
+  else if(el.dataset.t){d.timeline[i][el.dataset.t]=el.value;
+    if(el.dataset.t==="offset")row.querySelector(".clk").textContent=fmt(mins(page().start,Math.round(Number(el.value))||0));
+    if(el.dataset.t==="tag")row.className="step edit "+el.value;}
+  else if(el.dataset.k==="tip")d.tips[i]=el.value;
+  else if(el.dataset.h)d.home_prep[i][el.dataset.h]=el.value;
+  else if(el.dataset.s)d.supplies[i][el.dataset.s]=el.value;});
+$("#midCol").addEventListener("change",e=>{const d=drafts[activeId],el=e.target;
+  if(d&&el.dataset.s==="cat"){d.supplies[+el.closest("[data-i]").dataset.i].cat=el.value;return;}
+  if(d&&el.dataset.t==="tag"){const r=el.closest("[data-i]");d.timeline[+r.dataset.i].tag=el.value;r.className="step edit "+el.value;}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b||b.disabled)return;const act=b.dataset.act;
+  if(act==="edit-start"){e.preventDefault();e.stopPropagation();startEdit();focusEdit(b.dataset.sec,b.dataset.n);return;}if(act==="edit-save"){saveEdit();return;}if(act==="edit-cancel"){cancelEdit();return;}
+  const d=drafts[activeId];if(!d)return;const row=b.closest("[data-i]"),i=row?+row.dataset.i:-1,A=d.ingredients;let focus=null;
+  switch(act){
+    case "ing-add":A.push(blankIng());focus=`#ing .icard:nth-of-type(${A.length}) .nm-in`;break;
+    case "ing-del":A.splice(i,1);break;
+    case "ing-up":if(i>0)[A[i-1],A[i]]=[A[i],A[i-1]];break;
+    case "ing-down":if(i<A.length-1)[A[i+1],A[i]]=[A[i],A[i+1]];break;
+    case "tl-add":{const last=d.timeline[d.timeline.length-1];d.timeline.push({offset:last?(Math.round(Number(last.offset))||0)+5:0,heat:"",action:"",tag:"cook"});
+      focus=`#tl .step:nth-of-type(${d.timeline.length}) textarea`;break;}
+    case "tl-del":d.timeline.splice(i,1);break;
+    case "tip-add":d.tips.push("");focus=`#tips li:nth-of-type(${d.tips.length}) input`;break;
+    case "tip-del":d.tips.splice(i,1);break;
+    case "hp-add":d.home_prep.push({bag:"",item:"",task:"",pack:""});focus=`#hp .erow4:nth-of-type(${d.home_prep.length}) [data-h=item]`;break;
+    case "hp-del":d.home_prep.splice(i,1);break;
+    case "sup-add":{const last=d.supplies[d.supplies.length-1];d.supplies.push({name:"",cat:last?last.cat:"재료"});focus=`#sup .erow3:nth-of-type(${d.supplies.length}) [data-s=name]`;break;}
+    case "sup-del":d.supplies.splice(i,1);break;
+    default:return;}
+  renderPage();if(focus){const f=document.querySelector(focus);if(f)f.focus();}});
+
+/* ---------- ingredient folding ---------- */
+$("#ingSec").open=store.get("ingOpen",true)!==false;
+$("#ingSec").addEventListener("toggle",()=>store.set("ingOpen",$("#ingSec").open));
+window.addEventListener("pagehide",()=>store.set("ingOpen",$("#ingSec").open));
+function syncIngAll(){const cards=[...document.querySelectorAll("#ing .icard")];
+  $("#ingAll").style.visibility=cards.length?"visible":"hidden";
+  $("#ingAll").textContent=cards.length&&cards.every(c=>!c.open)?"모두 펼치기":"모두 접기";}
+$("#ingAll").addEventListener("click",e=>{e.preventDefault();e.stopPropagation();
+  const cards=[...document.querySelectorAll("#ing .icard")],open=cards.every(c=>!c.open);cards.forEach(c=>c.open=open);syncIngAll();});
+$("#ing").addEventListener("toggle",syncIngAll,true);
+
+/* ---------- render: all pages merged ---------- */
+function allItems(){const items=[];pages.filter(p=>p.data).forEach(p=>sorted(p.data).forEach((s,k)=>items.push({p,s,k,t:mins(p.start,s.offset)})));
+  items.sort((a,b)=>a.t-b.t||pages.indexOf(a.p)-pages.indexOf(b.p));return items;}
+function renderAll(){
+  $("#allsum").innerHTML=pages.map(p=>`<span><i class="dot" style="background:${COLORS[p.color]}"></i><b>${esc(pname(p))}</b>${p.run?'<span class="live">진행 중</span>':""}
+    ${p.data?`${esc(p.start)} 시작${p.data.total_minutes?" · 약 "+esc(p.data.total_minutes)+"분":""} · ${p.checked.length}/${sorted(p.data).length} 완료`:"가이드 없음"}</span>`).join("");
+  const items=allItems();
+  if(!items.length){$("#tlAll").innerHTML='<div class="empty">가이드를 만든 요리가 아직 없어요. 페이지에서 먼저 가이드를 만들어 주세요.</div>';return;}
+  const groups=[];items.forEach(it=>{const g=groups[groups.length-1];if(g&&g.t===it.t)g.items.push(it);else groups.push({t:it.t,items:[it]});});
+  $("#tlAll").innerHTML=groups.map(g=>{
+    const cookDishes=new Set(g.items.filter(i=>(i.s.tag||"cook")==="cook").map(i=>i.p.id));const clash=cookDishes.size>1;
+    return `<div class="grp${clash?" clash":""}"><div><div class="t">${fmt(g.t)}</div>${clash?'<div class="clash-note">동시 작업</div>':""}</div>
+      <div class="items">${g.items.map(i=>{const on=i.p.checked.includes(i.k),c=COLORS[i.p.color];
+        return `<div class="it${on?" checked":""}" style="border-left-color:${c}"><div class="a"><span class="dish-tag" style="color:${c}">${esc(pname(i.p))}</span>${i.s.heat?`<span class="heat ${heatCls(i.s.heat)}">${esc(i.s.heat)}</span>`:""}${esc(i.s.action)}</div>
+        <input type="checkbox" aria-label="완료" data-p="${i.p.id}" data-k="${i.k}"${on?" checked":""}></div>`}).join("")}</div></div>`}).join("");
+}
+$("#tlAll").addEventListener("change",e=>{if(e.target.type!=="checkbox")return;const p=byId(e.target.dataset.p);if(!p)return;
+  e.target.closest(".it").classList.toggle("checked",e.target.checked);toggleCheck(p,+e.target.dataset.k,e.target.checked);renderAll();});
+
+/* ---------- page tabs ---------- */
+function renderTabs(){
+  $("#pagebar").innerHTML=pages.map(p=>{const n=sorted(p.data).length;
+    return `<div class="ptab${view==="page"&&p.id===activeId?" on":""}" data-id="${p.id}" role="button" tabindex="0" title="${esc(pname(p))}">
+    <i class="dot" style="background:${COLORS[p.color]}"></i><span class="name">${esc(pname(p))}</span>${p.run?'<span class="live">진행</span>':""}
+    ${busy.has(p.id)?'<span class="spin"></span>':(n?`<span class="cnt">${p.checked.length}/${n}</span>`:"")}
+    <button type="button" class="x" data-del="${p.id}" aria-label="${esc(pname(p))} 페이지 삭제">×</button></div>`}).join("")
+   +`<button type="button" class="ptab add" id="addPage"${pages.length>=MAXP?" disabled":""}>＋ 새 메뉴 <span class="cnt">${pages.length}/${MAXP}</span></button>`
+   +`<button type="button" class="ptab all${view==="all"?" on":""}" id="allBtn">⚡ 동시 진행</button>`;}
+function loadForm(){const f=page().form;FIELDS.forEach(k=>$("#"+k).value=f[k]!=null?f[k]:"");if(!$("#start").value)$("#start").value=page().start;}
+function syncBusy(){const b=busy.has(activeId);$("#go").disabled=b;$("#loading").style.display=b?"flex":"none";if(!b)$("#stream").style.display="none";}
+function refresh(){renderTabs();
+  $(".grid").style.display=view==="all"?"none":"";$("#allview").style.display=view==="all"?"block":"none";
+  if(view==="page"){loadForm();renderPage();syncBusy();showErr(errs[activeId]||"");}else renderAll();updateRunUI();}
+function switchTo(id){activeId=id;view="page";save();refresh();}
+function addPage(){if(pages.length>=MAXP)return;const p=makePage(null,{start:page().start});pages.push(p);switchTo(p.id);$("#dish").focus();}
+function deletePage(id){pages=pages.filter(p=>p.id!==id);delete errs[id];delete drafts[id];
+  if(!pages.length)pages.push(makePage());if(!byId(activeId))activeId=pages[Math.max(0,pages.length-1)].id;save();refresh();}
+$("#pagebar").addEventListener("click",e=>{
+  const del=e.target.closest("[data-del]");
+  if(del){e.stopPropagation();
+    if(!del.classList.contains("arm")){del.classList.add("arm");del.textContent="삭제";
+      setTimeout(()=>{if(del.isConnected){del.classList.remove("arm");del.textContent="×";}},2500);return;}
+    deletePage(del.dataset.del);return;}
+  if(e.target.closest("#addPage")){addPage();return;}
+  if(e.target.closest("#allBtn")){view="all";refresh();return;}
+  const t=e.target.closest(".ptab[data-id]");if(t)switchTo(t.dataset.id);});
+$("#pagebar").addEventListener("keydown",e=>{const t=e.target.closest(".ptab[data-id]");if(t&&e.target===t&&(e.key==="Enter"||e.key===" ")){e.preventDefault();switchTo(t.dataset.id);}});
+FIELDS.forEach(k=>$("#"+k).addEventListener("input",()=>{const p=page();p.form[k]=$("#"+k).value;save();
+  if(k==="dish"&&!p.data){renderTabs();renderPage();}}));
+
+/* ---------- history ---------- */
+function renderHist(){const h=store.get("history",[]);
+  $("#hist").innerHTML=h.length?h.map((x,i)=>`<div class="h" data-i="${i}"><span>${esc(x.data.dish)}</span><small>${esc(x.when)}</small></div>`).join(""):'<div class="empty">아직 없어요</div>';}
+$("#hist").addEventListener("click",e=>{const el=e.target.closest(".h");if(!el)return;const x=store.get("history",[])[+el.dataset.i];if(!x)return;
+  const p=page();delete drafts[p.id];p.data=x.data;p.prepChecked=[];p.supChecked=[];p.start=x.start||p.start;p.form.start=p.start;p.form.dish=x.data.dish;p.checked=[];p.run=null;save();refresh();keepAwake();});
+function pushHist(d,start){const h=store.get("history",[]);const now=new Date();
+  h.unshift({data:d,start:start,when:(now.getMonth()+1)+"/"+now.getDate()+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")});
+  store.set("history",h.slice(0,6));renderHist();}
+
+/* ---------- settings ---------- */
+const ON_CLAUDE=/claude|anthropic/.test(location.hostname);
+const DEF_MODEL={anthropic:"claude-sonnet-5-5",openai:"gpt-5.6-terra"};
+const MODEL_OPTS={anthropic:["claude-sonnet-5-5","claude-opus-5-5","claude-haiku-5-5"],openai:["gpt-5.6-terra","gpt-5.6-luna","gpt-5.6-sol"]};
+let cfg=Object.assign({engine:ON_CLAUDE?"claude":"anthropic",keys:{},models:{},base:"https://api.openai.com/v1"},store.get("cfg",{}));
+cfg.keys=cfg.keys||{};cfg.models=cfg.models||{};
+if(cfg.key&&!cfg.keys[cfg.engine])cfg.keys[cfg.engine]=cfg.key;          // migrate old single-key format
+if(cfg.model&&!cfg.models[cfg.engine])cfg.models[cfg.engine]=cfg.model;
+delete cfg.key;delete cfg.model;
+const keyFor=e=>cfg.keys[e]||"";
+const modelFor=e=>cfg.models[e]||DEF_MODEL[e];
+let sample=null, draft=null, draftEng=null;
+const ENG={claude:"Claude 내장",anthropic:"Anthropic API",openai:"OpenAI API"};
+function syncEngine(){const e=cfg.engine;
+  $("#engineName").textContent=ENG[e]+(e==="claude"?(sample?"":" (연결 대기)"):" · "+modelFor(e));}
+function stash(){if(draftEng&&draftEng!=="claude"){draft.keys[draftEng]=$("#apiKey").value.trim();draft.models[draftEng]=$("#model").value.trim();}}
+function fill(e){draftEng=e;
+  $("#keyBox").style.display=e==="claude"?"none":"block";$("#baseWrap").style.display=e==="openai"?"block":"none";
+  if(e==="claude")return;
+  $("#apiKey").value=draft.keys[e]||"";$("#apiKey").placeholder=e==="anthropic"?"sk-ant-...":"sk-...";
+  $("#model").value=draft.models[e]||DEF_MODEL[e];$("#model").placeholder=DEF_MODEL[e];
+  $("#modelList").innerHTML=MODEL_OPTS[e].map(m=>`<option value="${m}">`).join("");
+  $("#keyWarn").style.display=ON_CLAUDE?"block":"none";}
+function openSettings(){draft={keys:Object.assign({},cfg.keys),models:Object.assign({},cfg.models)};draftEng=null;
+  document.querySelectorAll('input[name=eng]').forEach(r=>r.checked=r.value===cfg.engine);
+  $("#base").value=cfg.base;fill(cfg.engine);$("#mask").style.display="flex";}
+document.querySelectorAll('input[name=eng]').forEach(r=>r.addEventListener("change",()=>{stash();fill(r.value);}));
+$("#openSettings").onclick=openSettings;$("#cancel").onclick=()=>$("#mask").style.display="none";
+$("#mask").addEventListener("click",e=>{if(e.target.id==="mask")$("#mask").style.display="none"});
+$("#save").onclick=()=>{stash();cfg.chosen=true;cfg.engine=(document.querySelector('input[name=eng]:checked')||{}).value||cfg.engine;
+  cfg.keys=draft.keys;cfg.models={};for(const k in draft.models)if(draft.models[k]&&draft.models[k]!==DEF_MODEL[k])cfg.models[k]=draft.models[k];
+  cfg.base=$("#base").value.trim()||"https://api.openai.com/v1";
+  store.set("cfg",cfg);syncEngine();$("#mask").style.display="none";};
+
+/* ---------- AI ---------- */
+const SYS=`당신은 한국어로 답하는 셰프이자 바텐더·파티시에·아웃도어 쿠킹 코치입니다. 식사 요리뿐 아니라 디저트, 음료, 칵테일(하이볼·아포가토 등), 베이킹까지 같은 형식으로 안내합니다.
+사용자가 준 메뉴·인원·도구·요청 사항을 바탕으로, 재료별 손질·준비 / 시즈닝·맛내기(음료는 비율) / 불·온도 / 시간 / 완성 판단 기준과, 시작 시각 기준 경과 분(offset) 단위의 타임라인을 만드세요.
+규칙:
+- kind는 요리|디저트|음료|칵테일|베이킹|코스 중 하나.
+- heat(불·온도): 불을 쓰면 도구 특성(버너 개수, 온도 범위 등)을 반영해 "High","Medium","Low","끄기" 또는 "High → Low"처럼, 불을 안 쓰면 "차갑게","냉동","실온","뜨겁게" 같은 온도 상태로. 해당 없으면 빈 문자열.
+- 음료·칵테일은 seasoning에 비율과 양(ml·큰술)을, prep에 잔·얼음·칠링을, doneness에 맛·탄산·온도 확인법을 쓰세요. 디저트는 녹거나 식는 타이밍을 완성 판단에 반영.
+- 완성 판단은 눈·촉감·맛·속 온도 등 현장에서 바로 확인 가능한 기준으로.
+- 짧은 메뉴(음료 등)는 total_minutes와 offset을 몇 분 단위로 짧게, 같은 분에 할 일은 한 단계로 묶으세요.
+- 주류가 포함되면 tips에 무알콜 대안을 하나 넣으세요.
+- 타임라인은 사전 준비(prep)부터 상차림(serve)까지, 동시에 할 수 있는 일은 묶어서 대기 시간을 줄이세요. offset은 정수(분)이며, 시작 전 준비가 필요하면 음수 사용 가능.
+- tag는 prep|cook|rest|serve 중 하나.
+- home_prep: 미리 해 둘 수 있는 손질·마리네이드·칠링·계량·포장을 재료별로. 당일 시간을 최대한 줄이도록 하되, 소금처럼 미리 하면 안 되는 건 당일로 남기고 그 이유를 task에 짧게. bag은 ①②③처럼 쓰는 순서대로 번호(필요 없으면 빈 문자열). 이 경우 timeline에는 현장에서 할 일만 넣으세요.
+- supplies: 챙겨야 할 준비물 전체를 cat(재료|양념|도구|음료|기타)별로. 재료는 분량이 정해지면 이름에 함께 (예: "양갈비 1kg").
+- 반드시 아래 JSON 하나만 출력하고 다른 텍스트는 쓰지 마세요.
+{"kind":"요리","dish":"","summary":"2문장 이내","servings":"","equipment":"","total_minutes":0,
+"ingredients":[{"name":"","prep":"","seasoning":"","heat":"","time":"","doneness":"","tip":""}],
+"timeline":[{"offset":0,"heat":"","action":"","tag":"prep"}],
+"tips":[""],
+"home_prep":[{"bag":"①","item":"","task":"","pack":""}],
+"supplies":[{"name":"","cat":"재료"}]}`;
+function userMsg(){return `메뉴: ${$("#dish").value}
+인원: ${$("#people").value||"미정"}
+시작 시각: ${$("#start").value||"미정"}
+도구·장비: ${$("#gear").value||"일반 가정용 도구"}
+재료·요청 사항: ${$("#extra").value||"없음"}`;}
+function parseJSON(t){const a=t.indexOf("{"),b=t.lastIndexOf("}");if(a<0||b<a)throw new Error("AI 응답에서 JSON을 찾지 못했어요.");
+  let d;try{d=JSON.parse(t.slice(a,b+1));}catch(e){throw new Error("AI 응답 형식이 깨져서 읽지 못했어요. 한 번 더 눌러 주세요.");}
+  if(!Array.isArray(d.timeline)||!Array.isArray(d.ingredients))throw new Error("AI 응답 형식이 예상과 달라요.");
+  if(!Array.isArray(d.tips))d.tips=[];if(!Array.isArray(d.home_prep))d.home_prep=[];if(!Array.isArray(d.supplies))d.supplies=[];return d;}
+
+let samplePromise=null;
+function connectSample(){
+  if(sample)return Promise.resolve(sample);
+  if(samplePromise)return samplePromise;
+  samplePromise=(async()=>{
+    // window.claude가 늦게 붙는 경우를 위해 최대 10초 기다림
+    for(let i=0;i<40&&!(window.claude&&typeof window.claude.use==="function");i++)await new Promise(r=>setTimeout(r,250));
+    if(!(window.claude&&typeof window.claude.use==="function"))return null;
+    try{const s=await window.claude.use("sample");if(s){sample=s;if(!cfg.chosen&&cfg.engine!=="claude"){cfg.engine="claude";store.set("cfg",cfg);}syncEngine();}return s||null;}
+    catch(e){return null;}})();
+  samplePromise.then(s=>{if(!s)samplePromise=null;});
+  return samplePromise;}
+function setLoading(t){const el=$("#loadingText");if(el)el.textContent=t;}
+async function askClaude(msg,onT){
+  setLoading("Claude에 연결하는 중…");
+  const s=await connectSample();
+  if(!s)throw new Error("Claude 내장 AI에 연결할 수 없어요. claude.ai에서 이 페이지를 열었는지 확인해 주세요. HTML 파일로 열었다면 ⚙︎ API 설정에서 내 API 키를 선택하세요.");
+  setLoading("처음이면 'AI 사용 허용' 창이 떠요. 허용을 누르면 작성이 시작돼요…");
+  let started=false;
+  const r=await s(SYS+"\n\n---\n"+msg,{modelTier:"default",onText:({text})=>{if(!started){started=true;setLoading("AI가 가이드를 작성하는 중…");}onT(text);}});
+  if(r&&r.truncated&&!/\}\s*$/.test(r.text||""))throw new Error("AI 답변이 너무 길어서 중간에 끊겼어요. 요청 사항을 조금 줄이거나 다시 시도해 주세요.");
+  return r.text;}
+async function askAnthropic(msg){
+  const key=keyFor("anthropic");if(!key)throw new Error("API 설정에서 Anthropic API 키를 입력하세요.");
+  const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,
+    "anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:modelFor("anthropic"),max_tokens:8000,system:SYS,messages:[{role:"user",content:msg}]})});
+  const j=await res.json().catch(()=>({}));if(!res.ok)throw new Error("Anthropic API 오류 ("+res.status+"): "+((j.error&&j.error.message)||"응답 없음"));
+  return (j.content||[]).map(c=>c.text||"").join("");}
+async function askOpenAI(msg){
+  const key=keyFor("openai");if(!key)throw new Error("API 설정에서 OpenAI API 키를 입력하세요.");
+  const res=await fetch(cfg.base.replace(/\/$/,"")+"/chat/completions",{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+key},
+    body:JSON.stringify({model:modelFor("openai"),response_format:{type:"json_object"},messages:[{role:"system",content:SYS},{role:"user",content:msg}]})});
+  const j=await res.json().catch(()=>({}));if(!res.ok)throw new Error("API 오류 ("+res.status+"): "+((j.error&&j.error.message)||"응답 없음"));
+  return j.choices&&j.choices[0]&&j.choices[0].message?j.choices[0].message.content:"";}
+
+function showStream(t){const s=$("#stream");s.style.display="block";s.textContent=t.slice(-600);s.scrollTop=s.scrollHeight;}
+function showErr(m){["#err","#err2"].forEach(id=>{const e=$(id);if(e){e.textContent=m;e.style.display=m?"block":"none";}});}
+
+$("#f").addEventListener("submit",async e=>{
+  e.preventDefault();if(!$("#dish").value.trim())return;
+  const pid=activeId,p0=page();if(busy.has(pid))return;
+  FIELDS.forEach(k=>p0.form[k]=$("#"+k).value);save();
+  const msg=userMsg(), isHere=()=>pid===activeId&&view==="page";
+  delete errs[pid];showErr("");setLoading("AI가 가이드를 작성하는 중…");busy.add(pid);syncBusy();renderTabs();$("#stream").style.display="none";
+  try{
+    let text;
+    if(!cfg.chosen&&cfg.engine!=="claude"&&!keyFor(cfg.engine)){setLoading("AI 연결을 확인하는 중…");if(await connectSample()){cfg.engine="claude";store.set("cfg",cfg);syncEngine();}}
+    if(cfg.engine==="anthropic")text=await askAnthropic(msg);
+    else if(cfg.engine==="openai")text=await askOpenAI(msg);
+    else text=await askClaude(msg,t=>{if(isHere())showStream(t);});
+    const d=parseJSON(text);const p=byId(pid);
+    if(p){p.data=d;p.prepChecked=[];p.supChecked=[];p.start=p.form.start||p.start;p.checked=[];p.run=null;delete drafts[pid];save();pushHist(d,p.start);keepAwake();}
+    if(isHere())$("#hint").textContent="완성! 타임라인 체크박스로 진행 상황을 표시하고, 다른 메뉴는 ＋ 새 메뉴로 추가해 보세요.";
+  }catch(err){
+    let m=err&&err.message?err.message:String(err);
+    if(err&&err.code==="not_granted")m="Claude 내장 AI 사용이 허용되지 않았어요. API 설정에서 내 API 키를 사용해 보세요.";
+    else if(err&&err.code==="rate_limited")m="요청이 많아 잠시 제한됐어요. 조금 뒤 다시 시도하세요.";
+    else if(err instanceof TypeError&&/fetch/i.test(m))m="외부 API에 연결하지 못했어요. claude.ai에 게시된 페이지에서는 외부 호출이 막혀 있으니, HTML 파일을 직접 열어 사용하거나 'Claude 내장'을 선택하세요.";
+    if(byId(pid))errs[pid]=m;
+  }finally{
+    busy.delete(pid);renderTabs();
+    if(isHere()){syncBusy();showErr(errs[pid]||"");renderPage();setTimeout(()=>$("#stream").style.display="none",400);}
+    else if(view==="all")renderAll();
+  }
+});
+
+/* chips, tabs, shift, copy */
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{$("#dish").value=c.textContent;$("#dish").dispatchEvent(new Event("input"));$("#dish").focus();});
+$("#shift").onclick=()=>{const p=page();p.start=$("#start").value||p.start;p.form.start=p.start;save();renderPage();};
+async function copyText(btn,txt){try{await navigator.clipboard.writeText(txt);btn.textContent="복사됨 ✓";}catch(e){btn.textContent="복사 실패";}
+  setTimeout(()=>btn.textContent="복사",1500);}
+$("#copy").onclick=()=>{const p=page();if(!p.data)return;
+  copyText($("#copy"),p.data.dish+" 쿠킹 순서\n"+sorted(p.data).map(s=>fmt(mins(p.start,s.offset))+"  "+(s.heat?"["+s.heat+"] ":"")+s.action).join("\n"));};
+$("#copyAll").onclick=()=>{const items=allItems();if(!items.length)return;
+  copyText($("#copyAll"),"동시 진행 순서\n"+items.map(i=>fmt(i.t)+"  ["+pname(i.p)+"] "+(i.s.heat?"("+i.s.heat+") ":"")+i.s.action).join("\n"));};
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));
+  if(view!=="page"){view="page";refresh();}
+  const id=t.dataset.view==="timeline"?"#tlPanel":"#midCol";document.querySelector(id).scrollIntoView({behavior:"smooth",block:"start"});});
+
+/* ---------- run & alarms ---------- */
+let audioCtx=null, wakeLock=null, baseTitle=document.title;
+const anyRun=()=>pages.some(p=>p.run&&p.data);
+const dueAt=(p,s)=>p.run.t0+Number(s.offset||0)*60000;
+const hasNotif=()=>{try{return "Notification" in window}catch(e){return false}};
+const notifOK=()=>{try{return hasNotif()&&Notification.permission==="granted"}catch(e){return false}};
+function unlockAudio(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  if(!audioCtx)audioCtx=new AC();if(audioCtx.state!=="running")audioCtx.resume();}catch(e){}}
+const audioOK=()=>!!(audioCtx&&audioCtx.state==="running");
+function beep(n,vol){try{if(!audioOK())return;const t=audioCtx.currentTime+0.02;
+  for(let i=0;i<n;i++){const o=audioCtx.createOscillator(),g=audioCtx.createGain(),st=t+i*0.3;
+    o.type="sine";o.frequency.value=i%2?700:940;o.connect(g);g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(vol||0.4,st+0.02);g.gain.exponentialRampToValueAtTime(0.0001,st+0.24);
+    o.start(st);o.stop(st+0.26);}}catch(e){}}
+function buzz(pat){try{navigator.vibrate&&navigator.vibrate(pat);}catch(e){}}
+function askNotif(){try{if(hasNotif()&&Notification.permission==="default")Promise.resolve(Notification.requestPermission()).then(updateRunUI).catch(()=>{});}catch(e){}}
+function sysNotify(title,body,tag){if(!notifOK())return;try{const n=new Notification(title,{body,tag,renotify:true,requireInteraction:true});n.onclick=()=>{try{window.focus()}catch(e){}n.close();};}catch(e){}}
+async function keepAwake(){const want=anyRun();
+  try{if(want&&!wakeLock&&navigator.wakeLock&&document.visibilityState==="visible"){
+        wakeLock=await navigator.wakeLock.request("screen");wakeLock.addEventListener("release",()=>{wakeLock=null;updateRunUI();});}
+      if(!want&&wakeLock){const w=wakeLock;wakeLock=null;await w.release();}}catch(e){wakeLock=null;}
+  updateRunUI();}
+
+function startRun(p){const tl=sorted(p.data);if(!tl.length)return;
+  const now=Date.now(),first=Math.min(0,Number(tl[0].offset)||0);
+  const t0=now-first*60000;                         // 첫 단계(사전 준비 포함)가 '지금'이 되도록
+  p.run={t0,notified:[],finished:false};p.checked=[];
+  const d=new Date(t0);p.start=fmt(d.getHours()*60+d.getMinutes());p.form.start=p.start;save();}
+
+function toast(it){const box=$("#toasts"),el=document.createElement("div"),c=COLORS[it.p.color];
+  el.className="toast"+(it.fin?" fin":"");
+  const late=it.late>=60000?` · ${Math.round(it.late/60000)}분 지남`:"";
+  el.innerHTML=it.fin
+    ?`<div><div class="tt"><i class="dot" style="background:${c}"></i>${esc(pname(it.p))}</div><div class="tm">🎉 마지막 단계 시간이에요. 마무리하고 상차림!</div></div><button type="button">확인</button>`
+    :`<div><div class="tt"><i class="dot" style="background:${c}"></i>${esc(pname(it.p))} · ${fmt(mins(it.p.start,it.s.offset))}${late}</div>
+       <div class="tm">${it.s.heat?`<span class="heat ${heatCls(it.s.heat)}">${esc(it.s.heat)}</span> `:""}${esc(it.s.action)}</div></div><button type="button">완료</button>`;
+  el.querySelector("button").onclick=()=>{el.remove();
+    if(!it.fin&&byId(it.p.id)&&!it.p.checked.includes(it.k)){toggleCheck(it.p,it.k,true);
+      if(view==="page"&&it.p.id===activeId)renderPage();else if(view==="all")renderAll();}};
+  box.appendChild(el);while(box.children.length>4)box.firstChild.remove();}
+
+function alarm(fired){
+  const steps=fired.filter(f=>!f.fin),fins=fired.filter(f=>f.fin);
+  steps.slice(-4).forEach(toast);fins.forEach(toast);
+  if(steps.length>4){const el=document.createElement("div");el.className="toast";
+    el.innerHTML=`<div><div class="tm">화면이 꺼져 있는 동안 ${steps.length}개 단계가 지났어요. 타임라인을 확인하세요.</div></div><button type="button">확인</button>`;
+    el.querySelector("button").onclick=()=>el.remove();$("#toasts").prepend(el);}
+  beep(fins.length?5:3);buzz(fins.length?[400,150,400,150,600]:[300,120,300]);
+  const f=fired[fired.length-1];
+  const title=f.fin?`🎉 ${pname(f.p)} 완성 시간`:`⏰ ${pname(f.p)} · 지금 할 일`;
+  const body=f.fin?"마지막 단계 시간이에요. 마무리하고 상차림!":`${f.s.heat?"["+f.s.heat+"] ":""}${f.s.action}`+(steps.length>1?` (외 ${steps.length-1}개)`:"");
+  sysNotify(title,body,"cookflow-"+f.p.id);
+  if(document.hidden)document.title="⏰ "+(f.fin?pname(f.p)+" 완성":body);
+}
+
+function tick(){if(!anyRun())return;const now=Date.now(),fired=[];
+  pages.forEach(p=>{if(!p.run||!p.data)return;const tl=sorted(p.data);
+    tl.forEach((s,k)=>{if(p.run.notified.includes(k))return;const due=dueAt(p,s);
+      if(due<=now){p.run.notified.push(k);if(!p.checked.includes(k))fired.push({p,s,k,late:now-due});}});
+    if(!p.run.finished&&tl.length&&now>=dueAt(p,tl[tl.length-1])){p.run.finished=true;fired.push({p,fin:true});}});
+  if(fired.length){save();alarm(fired);if(view==="all")renderAll();}
+  updateRunUI();}
+
+function hm(ms){const s=Math.max(0,Math.round(ms/1000)),m=Math.floor(s/60);return m>=60?`${Math.floor(m/60)}시간 ${m%60}분`:m?`${m}분 ${String(s%60).padStart(2,"0")}초`:`${s}초`;}
+function updateRunUI(){const p=page();if(!p)return;const run=$("#run"),bar=$("#runbar");
+  run.disabled=!p.data;$("#shift").disabled=!!p.run;
+  if(!run.classList.contains("arm")){run.textContent=p.run?"■ 중지":"▶ 지금 시작";run.classList.toggle("stop",!!p.run);}
+  const steps=document.querySelectorAll("#tl .step");steps.forEach(el=>el.classList.remove("due","next"));
+  if(!p.run||!p.data){bar.style.display="none";return;}
+  const tl=sorted(p.data),now=Date.now();let next=-1;
+  tl.forEach((s,k)=>{const el=steps[k];if(!el)return;if(dueAt(p,s)<=now)el.classList.add("due");else if(next<0&&!p.checked.includes(k))next=k;});
+  if(next>=0&&steps[next])steps[next].classList.add("next");
+  const left=tl.length-p.checked.length;
+  const head=next>=0?`다음 <b>${fmt(mins(p.start,tl[next].offset))}</b> (${hm(dueAt(p,tl[next])-now)} 후) · ${esc(tl[next].action)}`
+    :`🎉 모든 단계 시간이 됐어요. 남은 체크 ${left}개 · 다 끝나면 <b>■ 중지</b>`;
+  const st=[audioOK()?"소리 켜짐":"소리 꺼짐(화면을 한 번 눌러 주세요)",
+    navigator.vibrate?"진동":"",
+    wakeLock?"화면 켜짐 유지":"",
+    notifOK()?"시스템 알림 허용":""].filter(Boolean).join(" · ");
+  bar.innerHTML=`<div>${head}</div><div class="sub">알림: ${st}</div>`+(wakeLock||!navigator.wakeLock?"":'<div class="warnline">화면이 꺼지면 알림이 늦어질 수 있어요. 요리하는 동안 이 화면을 켜 두세요.</div>');
+  bar.style.display="block";}
+
+$("#run").onclick=()=>{const p=page(),btn=$("#run");if(!p.data)return;
+  unlockAudio();
+  if(p.run){
+    if(!btn.classList.contains("arm")){btn.classList.add("arm");btn.textContent="중지할까요?";
+      setTimeout(()=>{btn.classList.remove("arm");updateRunUI();},2500);return;}
+    btn.classList.remove("arm");p.run=null;save();renderTabs();renderPage();keepAwake();return;}
+  askNotif();startRun(p);$("#start").value=p.start;beep(1,0.25);renderTabs();renderPage();keepAwake();tick();};
+document.addEventListener("pointerdown",()=>{if(anyRun()&&!audioOK()){unlockAudio();setTimeout(updateRunUI,200);}},true);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){document.title=baseTitle;tick();keepAwake();}});
+setInterval(tick,1000);
+
+/* init */
+refresh();renderHist();syncEngine();keepAwake();tick();
+connectSample();
+})();
+</script>
+</body>
+</html>
