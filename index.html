@@ -361,6 +361,7 @@ ingredients:[
 {name:"② 양파",prep:"[집] 1~1.5cm 가로 링, 물에 불린 이쑤시개로 고정",seasoning:"양면 올리브유 붓질 → 소금·후추",heat:"Medium",time:"10분 (한 번 뒤집기)",doneness:"그릴 자국이 나고 속이 투명해짐",tip:""},
 {name:"② 양송이",prep:"[집] 씻지 말고 키친타월로 닦기, 기둥 떼기",seasoning:"갓 겉면에 올리브유 붓질 → 안쪽에 소금 살짝",heat:"Medium",time:"8~10분 (뒤집지 않기)",doneness:"안쪽에 즙이 찰랑하게 고임",tip:"갓이 그릴에 닿게 올리고, 수평 유지하며 꺼내기"},
 {name:"⑤ 가리비",prep:"[집] 당일 구입, 솔로 껍데기 문질러 씻기 (물에 담그지 않기), 젖은 키친타월 덮어 보관 / 마늘버터: 앵커 버터 50g + 다진 마늘 2~3쪽",seasoning:"입이 벌어지면 위 껍데기 떼고 마늘버터 1작은술 + 후추 (소금 생략) → 다 되면 레몬즙",heat:"Low → Medium",time:"약 4분 (입 벌어질 때까지) + 3~4분",doneness:"살이 하얗게 불투명, 가장자리가 살짝 말리고 탱탱함",tip:"오래 구우면 질겨지니 하얘지면 바로 빼기"},
+{name:"🌭 잰슨빌 소시지",prep:"[집] 포장째 아이스박스에 (포장에 '익힌 제품'인지 확인) / [현장] 겉에 얕은 사선 칼집 2~3개 — 포크로 찌르지 않기",seasoning:"따로 안 해도 됨 (이미 간이 됨) · 렌치나 머스타드에 찍어 먹기",heat:"Medium",time:"6~8분 (1~2분마다 굴리기) · 생소시지면 12~15분",doneness:"껍질이 팽팽하게 부풀고 칼집이 벌어지며 지글지글 · 생소시지는 속 71°C 이상",tip:"불이 세면 껍질이 터지니 가장자리에서 굴리기"},
 {name:"소스: 렌치 · 쯔란 소금",prep:"[집] 렌치: 시판 렌치 6큰술 + 레몬즙 2작은술 + 다진 로즈마리 약간 섞기 / 쯔란 소금: 쯔란 가루 1 : 소금 1 + 고춧가루 약간",seasoning:"렌치는 부드럽고 상큼하게, 쯔란 소금은 진하게 — 번갈아 찍어 먹기",heat:"차갑게",time:"—",doneness:"렌치는 차가운 상태로, 쯔란 소금은 뭉치지 않게 마른 통에",tip:"렌치는 아이스박스에, 상차림 때 꺼내기"},
 {name:"④ 애호박",prep:"[집] 씻고 물기 완전히 닦기 → 꼭지 자르고 1cm 어슷썰기 → 올리브유로 코팅 (아스파라거스와 같은 지퍼백)",seasoning:"그릴에 올리기 직전 소금·후추",heat:"Medium",time:"5~7분 (앞뒤 2~3분, 한 번 뒤집기)",doneness:"겉에 노릇한 색이 나고 속은 살짝 단단함",tip:"오래 구우면 물러져요 · 먹기 직전 레몬즙"},
 {name:"④ 아스파라거스",prep:"[집] 씻고 물기 닦기 → 밑동을 구부려 부러지는 곳에서 자르기 (굵으면 아래 1/3 껍질 벗기기) → 올리브유로 코팅",seasoning:"그릴에 올리기 직전 소금·후추",heat:"Medium",time:"5~7분 (굴려가며, 굵으면 +3분)",doneness:"선명한 초록색이 되고 들었을 때 살짝 휘어짐",tip:"그릴망과 가로 방향으로 놓아야 빠지지 않아요 · 먹기 직전 레몬즙"},
@@ -370,8 +371,12 @@ timeline:[
 {offset:0,heat:"High",action:"그릴 펼치고 가스 연결, 기름받이 비었는지 확인 → 뚜껑 닫고 예열 (그릴망에 호일 깔지 않기)",tag:"prep"},
 {offset:8,heat:"Low",action:"브러시로 그릴망 긁고 기름 묻힌 키친타월로 닦기 → ① 통마늘을 호일째 가장자리에 세워 올리기, 뚜껑 닫기",tag:"cook"},
 {offset:21,heat:"Medium",action:"② 양파: 양면 올리브유 + 소금·후추 / 양송이: 갓 겉면 올리브유 + 안쪽 소금 살짝 → 갓이 그릴에 닿게 올리고 뚜껑 닫기",tag:"cook"},
+{offset:23,heat:"Medium",action:"🌭 잰슨빌 소시지에 얕은 칼집 2~3개 → 양파·양송이 옆에 올리기",tag:"cook"},
+{offset:28,heat:"Medium",action:"소시지 굴려서 골고루 굽기",tag:"cook"},
+{offset:46,heat:"Medium",action:"소시지를 가장자리에 다시 올려 1~2분 데우기 (가리비·채소와 같이 상차림)",tag:"cook"},
 {offset:26,heat:"Medium",action:"양파만 뒤집기 (양송이는 그대로) → ③ 양갈비 겉 기름 눌러 닦고 굵은 허브 조각 털기",tag:"cook"},
 {offset:31,heat:"High",action:"통마늘 확인 (덜 익었으면 가장자리에 그대로) → 양파·양송이 꺼내 호일로 덮기 → 그릴망 1~2분 다시 달구기",tag:"cook"},
+{offset:31,heat:"High",action:"소시지도 꺼내 양파·양송이와 같이 호일로 덮어 두기",tag:"cook"},
 {offset:33,heat:"High",action:"③ 양갈비에 소금·후추 (넉넉히) → 올리고 2분 건드리지 않기",tag:"cook"},
 {offset:35,heat:"High",action:"양갈비 뒤집어서 2분",tag:"cook"},
 {offset:37,heat:"Low",action:"뚜껑 닫고 3~5분 (미디엄레어 속 55~57°C)",tag:"cook"},
@@ -379,7 +384,7 @@ timeline:[
 {offset:42,heat:"Medium",action:"양갈비 꺼내 5분 레스팅 (호일 텐트 + 로즈마리) → 빈 곳에 ④ 애호박·아스파라거스·토마토 소금·후추 후 굽기",tag:"rest"},
 {offset:44,heat:"Medium",action:"가리비 입이 벌어지면 위 껍데기 떼고 마늘버터 1작은술 + 후추 → 애호박 뒤집고 아스파라거스 굴리기 → 뚜껑 닫기",tag:"cook"},
 {offset:48,heat:"끄기",action:"가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 렌치·쯔란 소금 꺼내기 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기",tag:"serve"}],
-tips:["손질·마리네이드는 집에서: 봉투 ①통마늘 ②양파·양송이 ③양갈비 ④채소 ⑤가리비·마늘버터","소금+후추는 히말라야 소금(갈아서) 2 : 후추 1로 섞은 통 하나로","불이 확 올라오면 고기를 가장자리로 옮기고 Low로","그릴 자리가 부족하면 방울토마토는 가리비 뚜껑 열 때(+44분) 올리기","후식: 위스키 아포가토 (하겐다즈 바닐라 한 스쿱 + 산토리 2큰술)","찍어 먹는 소스: 렌치(레몬·로즈마리 섞음) + 쯔란 소금 두 가지","사용 후 가스 밸브 잠그고 따뜻할 때 브러시 청소"],
+tips:["손질·마리네이드는 집에서: 봉투 ①통마늘 ②양파·양송이 ③양갈비 ④채소 ⑤가리비·마늘버터","소금+후추는 히말라야 소금(갈아서) 2 : 후추 1로 섞은 통 하나로","불이 확 올라오면 고기를 가장자리로 옮기고 Low로","그릴 자리가 부족하면 방울토마토는 가리비 뚜껑 열 때(+44분) 올리기","후식: 위스키 아포가토 (하겐다즈 바닐라 한 스쿱 + 산토리 2큰술)","찍어 먹는 소스: 렌치(레몬·로즈마리 섞음) + 쯔란 소금 두 가지","잰슨빌 소시지는 양파·양송이와 같이 Medium에서 굴려 굽고, 상차림 직전 가장자리에서 다시 데우기","사용 후 가스 밸브 잠그고 따뜻할 때 브러시 청소"],
 home_prep:[
 {bag:"①",item:"통마늘",task:"겉껍질 몇 겹 벗기고 윗부분 0.5~1cm 자르기 (심지·밑동은 그대로) → 단면에 올리브유 1작은술 + 앵커 버터 약 5g + 소금 한 꼬집 (가염 버터면 소금 생략)",pack:"호일 두 겹, 이음매 위로 꽉 오므려 세워서 보관"},
 {bag:"②",item:"양파",task:"껍질 벗기고 1~1.5cm 가로 링 → 물에 10분 불린 이쑤시개로 고정 (기름·소금은 현장에서)",pack:"밀폐 통"},
@@ -389,14 +394,15 @@ home_prep:[
 {bag:"④",item:"방울토마토",task:"씻고 꼭지 떼고 물기 닦기 → 물에 10분 불린 꼬치에 4~5개씩",pack:"통에 따로 (눌려 터지지 않게)"},
 {bag:"⑤",item:"가리비",task:"당일 구입 → 솔로 껍데기 문질러 씻기 (물에 오래 담그지 않기), 입 벌어진 채 안 닫히는 건 버리기",pack:"통에 젖은 키친타월 덮기 (밀폐·물에 담그기 X), 아이스박스 아래"},
 {bag:"⑤",item:"마늘버터",task:"말랑한 앵커 버터 50g + 곱게 다진 마늘 2~3쪽 섞기",pack:"작은 밀폐 통"},
+{bag:"",item:"잰슨빌 소시지",task:"포장째 그대로 (익힌 제품인지 포장 확인), 칼집은 현장에서",pack:"아이스박스"},
 {bag:"",item:"렌치 소스",task:"시판 렌치 6큰술 + 레몬즙 2작은술 + 다진 로즈마리 약간 섞기",pack:"작은 밀폐 통, 아이스박스"},
 {bag:"",item:"쯔란 소금",task:"쯔란 가루 1 : 소금 1 + 고춧가루 약간 섞기",pack:"작은 마른 통"},
 {bag:"",item:"소금 + 후추",task:"히말라야 소금 갈아서 후추와 2 : 1로 섞기",pack:"작은 통"},
 {bag:"",item:"레몬",task:"반 개는 즙용, 반 개는 웨지로 자르기",pack:"작은 통"},
 {bag:"",item:"후식 (하겐다즈)",task:"출발 직전 냉동실에서 꺼내 신문지·수건으로 감싸기",pack:"아이스박스 맨 아래"}],
 supplies:[
-{name:"양갈비 1kg",cat:"재료"},{name:"통마늘",cat:"재료"},{name:"양파",cat:"재료"},{name:"양송이",cat:"재료"},{name:"애호박",cat:"재료"},{name:"아스파라거스",cat:"재료"},{name:"방울토마토",cat:"재료"},{name:"가리비",cat:"재료"},{name:"레몬",cat:"재료"},{name:"하겐다즈 바닐라",cat:"재료"},
-{name:"올리브유",cat:"양념"},{name:"히말라야 소금",cat:"양념"},{name:"후추",cat:"양념"},{name:"앵커 버터",cat:"양념"},{name:"생로즈마리",cat:"양념"},{name:"생타임",cat:"양념"},{name:"마늘 (마늘버터용)",cat:"양념"},{name:"렌치 소스 (시판)",cat:"양념"},{name:"쯔란 가루",cat:"양념"},{name:"고춧가루",cat:"양념"},
+{name:"양갈비 1kg",cat:"재료"},{name:"통마늘",cat:"재료"},{name:"양파",cat:"재료"},{name:"양송이",cat:"재료"},{name:"애호박",cat:"재료"},{name:"아스파라거스",cat:"재료"},{name:"방울토마토",cat:"재료"},{name:"가리비",cat:"재료"},{name:"잰슨빌 소시지",cat:"재료"},{name:"레몬",cat:"재료"},{name:"하겐다즈 바닐라",cat:"재료"},
+{name:"올리브유",cat:"양념"},{name:"히말라야 소금",cat:"양념"},{name:"후추",cat:"양념"},{name:"앵커 버터",cat:"양념"},{name:"생로즈마리",cat:"양념"},{name:"생타임",cat:"양념"},{name:"마늘 (마늘버터용)",cat:"양념"},{name:"렌치 소스 (시판)",cat:"양념"},{name:"머스타드 (선택)",cat:"양념"},{name:"쯔란 가루",cat:"양념"},{name:"고춧가루",cat:"양념"},
 {name:"호일",cat:"도구"},{name:"이쑤시개 / 꼬치",cat:"도구"},{name:"밀폐 통",cat:"도구"},{name:"고기 온도계",cat:"도구"},{name:"키친타월",cat:"도구"},{name:"주방 가위",cat:"도구"},
 {name:"산토리 위스키",cat:"음료"},{name:"토닉워터 · 탄산수",cat:"음료"}]};
 const EXAMPLE_FORM={dish:"양갈비 바베큐 + 가리비",people:"4명",start:"18:10",gear:"웨버 트래블러 가스그릴(버너 1개)",extra:"집에서 손질·마리네이드 완료. 양갈비는 오일+허브+소금+후추, 가니시는 올리브유·소금·후추·레몬즙, 통마늘 버터 호일구이, 가리비는 마늘버터. 6시 도착, 6시 10분 시작."};
@@ -436,7 +442,7 @@ supplies:[{name:"하겐다즈 바닐라",cat:"재료"},{name:"산토리 위스�
 {name:"아이스크림 스쿱 또는 큰 숟가락",cat:"도구"},{name:"작은 그릇 4개",cat:"도구"},{name:"신문지 또는 수건",cat:"도구"}]};
 const EX_AFFOGATO_FORM={dish:"위스키 아포가토",people:"4인",start:"19:20",gear:"아이스크림 스쿱, 작은 그릇",extra:"하겐다즈 바닐라, 산토리 위스키. 식사 후 디저트, 다른 토핑 없이."};
 const EXTRA_EXAMPLES=[[EX_HIGHBALL,EX_HIGHBALL_FORM],[EX_AFFOGATO,EX_AFFOGATO_FORM]];
-const EXAMPLE_VER=7, OLD_EXAMPLE_SUMMARY="버너 하나짜리 포터블 가스그릴에서 불 세기를 바꿔가며 가니시와 양갈비를 순서대로 굽는 구성. 시즈닝은 올리브유·소금·후추·레몬즙으로 단순하게.";
+const EXAMPLE_VER=8, OLD_EXAMPLE_SUMMARY="버너 하나짜리 포터블 가스그릴에서 불 세기를 바꿔가며 가니시와 양갈비를 순서대로 굽는 구성. 시즈닝은 올리브유·소금·후추·레몬즙으로 단순하게.";
 
 /* ---------- pages ---------- */
 const MAXP=5, COLORS=["#14b19a","#e8833a","#5b7fd6","#c2539a","#8a9a2b"];
@@ -473,6 +479,20 @@ else if(store.get("exampleVer",1)<EXAMPLE_VER){
     if(Array.isArray(d.supplies))src("supplies",x=>/렌치|쯔란|고춧가루/.test(x.name)).forEach(x=>{if(!d.supplies.some(y=>y.name===x.name))d.supplies.push(x);});
     if(Array.isArray(d.tips)&&!d.tips.some(t=>/렌치/.test(t)))d.tips.push("찍어 먹는 소스: 렌치(레몬·로즈마리 섞음) + 쯔란 소금 두 가지");
     if(Array.isArray(d.timeline))d.timeline.forEach(t=>{if(t.action==="가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기")t.action="가리비 살이 하얀지 확인 → 가리비·채소에 레몬즙 → 렌치·쯔란 소금 꺼내기 → 양갈비·채소·가리비 함께 상차림 → 노브와 가스 밸브 잠그기";});});
+  /* v8: 잰슨빌 소시지 추가 (체크는 단계 내용 기준으로 유지) */
+  pages.forEach(p=>{const d=p.data;if(!d||d.dish!==EXAMPLE.dish)return;
+    const has=a=>Array.isArray(a)&&a.some(x=>/소시지/.test(JSON.stringify(x)));
+    const src=(arr)=>EXAMPLE[arr].filter(x=>/소시지/.test(JSON.stringify(x))).map(x=>Object.assign({},x));
+    if(Array.isArray(d.timeline)&&!has(d.timeline)){
+      const srt=t=>t.slice().sort((a,b)=>a.offset-b.offset),key=s=>s.offset+"|"+s.action;
+      const oldKeys=new Set((p.checked||[]).map(k=>srt(d.timeline)[k]).filter(Boolean).map(key));
+      d.timeline=d.timeline.concat(src("timeline"));
+      p.checked=srt(d.timeline).map((s,k)=>oldKeys.has(key(s))?k:-1).filter(k=>k>=0);
+      if(p.run)p.run.notified=[];}
+    if(Array.isArray(d.ingredients)&&!has(d.ingredients)){const at=d.ingredients.findIndex(i=>/렌치/.test(i.name));d.ingredients.splice(at>-1?at:d.ingredients.length,0,...src("ingredients"));}
+    if(Array.isArray(d.home_prep)&&!has(d.home_prep)){const at=d.home_prep.findIndex(h=>h.item==="렌치 소스");d.home_prep.splice(at>-1?at:d.home_prep.length,0,...src("home_prep"));}
+    if(Array.isArray(d.supplies))[{name:"잰슨빌 소시지",cat:"재료"},{name:"머스타드 (선택)",cat:"양념"}].forEach(x=>{if(!d.supplies.some(y=>y.name===x.name))d.supplies.push(x);});
+    if(Array.isArray(d.tips)&&!d.tips.some(t=>/소시지/.test(t)))d.tips.push("잰슨빌 소시지는 양파·양송이와 같이 Medium에서 굴려 굽고, 상차림 직전 가장자리에서 다시 데우기");});
   store.set("pages",pages);store.set("exampleVer",EXAMPLE_VER);}
 pages=pages.slice(0,MAXP);
 let activeId=store.get("active",pages[0].id); if(!pages.some(p=>p.id===activeId))activeId=pages[0].id;
